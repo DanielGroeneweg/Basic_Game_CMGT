@@ -134,9 +134,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerTankTop
       objectReference: {fileID: 0}
+    - target: {fileID: 181818077799470962, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 636883874405053261, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
       propertyPath: m_Name
       value: PlayerTankBarrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 636883874405053261, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 672221882971161554, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -201,6 +209,10 @@ PrefabInstance:
     - target: {fileID: 1153093373755847779, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
       propertyPath: m_Name
       value: PlayerTank
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153093373755847779, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1367502784231600363, guid: a30540c41d7d5ed4281d72b4916afb5e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -623,6 +635,67 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.44637638
   m_Center: {x: 0.00000027567148, y: -0.000000014901161, z: 0.00000014901161}
+--- !u!1001 &667318188
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3027468980819811938, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_Name
+      value: EnemyTank (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933490964693085732, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 16.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,7 +2065,7 @@ GameObject:
   - component: {fileID: 1959602836}
   m_Layer: 0
   m_Name: PlayerItems
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2183,6 +2256,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080978398}
   m_CullTransparentMesh: 1
+--- !u!1001 &2112497633
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3027468980819811938, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_Name
+      value: EnemyTank (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933490964693085732, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
 --- !u!1001 &1863607538052614962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2256,6 +2390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyTank
       objectReference: {fileID: 0}
+    - target: {fileID: 6933490964693085732, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7330600067781010714, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2296,14 +2434,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8292645502859700160, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
-      propertyPath: m_Name
-      value: EnemyTankTop
-      objectReference: {fileID: 0}
-    - target: {fileID: 8738739405404783615, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
-      propertyPath: m_Name
-      value: EnemyTankBarrel
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2317,6 +2447,8 @@ SceneRoots:
   - {fileID: 550958514}
   - {fileID: 655028283}
   - {fileID: 8078612174148380191}
+  - {fileID: 2112497633}
+  - {fileID: 667318188}
   - {fileID: 1959602839}
   - {fileID: 1863607538052614962}
   - {fileID: 1584173339}

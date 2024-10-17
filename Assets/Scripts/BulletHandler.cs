@@ -4,45 +4,45 @@ using UnityEngine;
 
 public class BulletHandler : MonoBehaviour
 {
-    private GameObject player;
-    private GameObject playerTank;
-    private GameObject playerTankBarrel;
-    private GameObject enemy;
-    private GameObject enemyTank;
-    private GameObject enemyTankBarrel;
     private CanvasManager canvasManager;
     private void Start()
     {
-        player = GameObject.Find("PlayerItems");
-        playerTank = GameObject.Find("PlayerTankTop");
-        playerTankBarrel = GameObject.Find("PlayerTankBarrel");
-        enemy = GameObject.Find("EnemyTank");
-        enemyTank = GameObject.Find("EnemyTankTop");
-        enemyTankBarrel = GameObject.Find("EnemyTankBarrel");
         canvasManager = GameObject.Find("Canvas").GetComponent<CanvasManager>();
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         switch (gameObject.tag)
         {
             case "EnemyBullet":
-                if (collision.gameObject == player || collision.gameObject == playerTank || collision.gameObject == playerTankBarrel)
+                if (collision.gameObject.tag == "Player")
                 {
-                    Debug.Log("Player Hit By Enemy Missile!");
                     canvasManager.DamagePlayer();
                 }
                 break;
             case "PlayerBullet":
-                if (collision.gameObject == enemy || collision.gameObject == enemyTank || collision.gameObject == enemyTankBarrel)
+                if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
                 {
-                    Debug.Log("Enemy Hit By Player Missile!");
                     canvasManager.IncreaseScore();
                 }
                 break;
             case "SuperBullet":
+                if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
+                {
+                    GameObject obj = collision.gameObject;
+                    while (obj.tag != "Enemy")
+                    {
+                        obj = obj.transform.parent.gameObject;
+                        Debug.Log(obj.name);
+                    }
+                    Destroy(obj);
+                    Debug.Log("Bullet Position: " + transform.position);
+
+                    canvasManager.IncreaseScore();
+                }
                 break;
         }
 
-        Destroy(gameObject);
+        if (gameObject.tag == "SuperBullet" && (collision.tag == "Enemy" || collision.tag == "EnemyBody")) return;
+        else Destroy(gameObject);
     }
 }

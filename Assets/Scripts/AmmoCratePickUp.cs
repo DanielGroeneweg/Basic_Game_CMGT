@@ -26,7 +26,7 @@ public class AmmoCratePickUp : MonoBehaviour
         {
             canvasManager.SwitchBulletImageVisibility();
             player.GetComponent<PlayerAimingAndShooting>().hasSuperBullet = true;
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }
