@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAimingAndShooting : MonoBehaviour
 {
@@ -19,8 +20,11 @@ public class PlayerAimingAndShooting : MonoBehaviour
     // Publics
     public float shootInterval;
     public float bulletSpeed;
+    public bool hasSuperBullet = false;
     public GameObject bulletPrefab;
+    public GameObject superBulletPrefab;
     public GameObject bulletSpawnPoint;
+    public CanvasManager canvasManager;
 
     // Privates
     private float shootCooldown;
@@ -35,7 +39,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
     {
         RotateTop();
 
-        if (canShoot && Input.GetMouseButtonDown(0)) Shoot();
+        if (canShoot && Input.GetMouseButton(0)) Shoot();
         else ShootCooldown();
     }
 
@@ -71,9 +75,25 @@ public class PlayerAimingAndShooting : MonoBehaviour
     private void Shoot()
     {
         // Create a bullet at the bullet spawn point gameobject's transform
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+        GameObject bullet = null;
+        
+        // Change to Super Bullet if the player has one
+        if (hasSuperBullet)
+        {
+            bullet = Instantiate(superBulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+            
+            hasSuperBullet = false;
+            canvasManager.SwitchBulletImageVisibility();
+        }
+
+        else
+        {
+            bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+        }
+
         // Set our bullet speed
         bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+
         // Set canShoot to false to make us wait for the cooldown to shoot again
         canShoot = false;
     }

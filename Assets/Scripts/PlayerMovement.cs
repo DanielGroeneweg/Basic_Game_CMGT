@@ -90,15 +90,35 @@ public class PlayerMovement : MonoBehaviour
         
         // Save our current velocity
         oldVelocity = velocity;
-
-        Debug.Log(velocity);
     }
 
     private void RotateWheels()
     {
         if (velocity == 0)
         {
+            if (myRotateDirection == rotateDirection.Left)
+            {
+                // If rotate direction is left, the left-side wheels should rotate clockwise and the right-side counterclockwise
+                // Left-side wheels
+                RotateWheel(-wheelRotationSpeed, wheelBackLeft);
+                RotateWheel(-wheelRotationSpeed, wheelFrontLeft);
+                
+                // Right-side wheels
+                RotateWheel(wheelRotationSpeed, wheelBackRight);
+                RotateWheel(wheelRotationSpeed, wheelFrontRight);
+            }
 
+            else if (myRotateDirection == rotateDirection.Right)
+            {
+                // If rotate direction is left, the left-side wheels should rotate counterclockwise and the right-side clockwise
+                // Left-side wheels
+                RotateWheel(wheelRotationSpeed, wheelBackLeft);
+                RotateWheel(wheelRotationSpeed, wheelFrontLeft);
+
+                // Right-side wheels
+                RotateWheel(-wheelRotationSpeed, wheelBackRight);
+                RotateWheel(-wheelRotationSpeed, wheelFrontRight);
+            }
         }
         
         else
@@ -107,28 +127,24 @@ public class PlayerMovement : MonoBehaviour
             {
                 // If velocity is greater than 0 all wheels should rotate counterclockwise
                 // Left-side wheels
-                RotateWheel(rotationSpeed, wheelBackLeft);
-                RotateWheel(rotationSpeed, wheelFrontLeft);
+                RotateWheel(wheelRotationSpeed, wheelBackLeft);
+                RotateWheel(wheelRotationSpeed, wheelFrontLeft);
 
                 // Right-side wheels
-                RotateWheel(rotationSpeed, wheelBackRight);
-                RotateWheel(rotationSpeed, wheelFrontRight);
-
-                Debug.Log("Rotating Forward");
+                RotateWheel(wheelRotationSpeed, wheelBackRight);
+                RotateWheel(wheelRotationSpeed, wheelFrontRight);
             }
 
             else if (velocity < 0)
             {
                 // If velocity is smaller than 0 all wheels should rotate clockwise
                 // Left-side wheels
-                RotateWheel(-rotationSpeed, wheelBackLeft);
-                RotateWheel(-rotationSpeed, wheelFrontLeft);
+                RotateWheel(-wheelRotationSpeed, wheelBackLeft);
+                RotateWheel(-wheelRotationSpeed, wheelFrontLeft);
 
                 // Right-side wheels
-                RotateWheel(-rotationSpeed, wheelBackRight);
-                RotateWheel(-rotationSpeed, wheelFrontRight);
-
-                Debug.Log("Rotating Backward");
+                RotateWheel(-wheelRotationSpeed, wheelBackRight);
+                RotateWheel(-wheelRotationSpeed, wheelFrontRight);
             }
         }
 
@@ -137,12 +153,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotateWheel(float wheelRotation, GameObject wheel)
     {
-        wheel.transform.localEulerAngles = new Vector3(
-            wheel.transform.localEulerAngles.x + wheelRotation * Time.deltaTime,
-            wheel.transform.localEulerAngles.y,
-            wheel.transform.localEulerAngles.z
-            );
-
-        Debug.Log(wheelRotation);
+        wheel.transform.Rotate(new Vector3(wheelRotation * Time.deltaTime, 0, 0));
     }
 }
