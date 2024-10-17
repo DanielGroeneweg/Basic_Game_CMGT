@@ -1,57 +1,148 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // The player character
-    public GameObject playerCharacter;
-    // The distance we travel horizontally
-    public float horizontalSpeed;
-    // The distance we travel vertically when the left mouse button is clicked
-    public float verticalSpeed;
-    // The standard gravity applied to the player character
-    public float gravity;
-    // The maximum gravity applied to the player character
-    public float gravityMax;
-    // The addition to the gravity till max velocity
-    public float gravityMultiplier;
-    // The distance we travel horizontally down when the player did not press left mouse button
-    private float downForce;
-    // A boolean to check if the player has hit an object yet
-    public bool isAlive = true;
-    // The audio source for the sound played when flying upwards
-    public AudioSource flySound;
-    // The maximum Y Position we can have
-    public float maxYPos;
-    void Update()
+    public GameObject tank;
+
+    #region movement
+    public float acceleration;
+    public float maxVelocity;
+    public float deacceleration;
+    public float maxReverseVelocity;
+    public float passiveSlowDown;
+    public Rigidbody rb;
+
+    private float velocity;
+    private float oldVelocity;
+    #endregion
+
+    public float rotationSpeed;
+
+    #region wheel rotation
+    public GameObject wheelFrontLeft;
+    public GameObject wheelFrontRight;
+    public GameObject wheelBackLeft;
+    public GameObject wheelBackRight;
+    public float wheelRotationSpeed;
+    private enum rotateDirection { Left, Right, None};
+    private rotateDirection myRotateDirection = rotateDirection.None;
+    #endregion
+    private void Update()
     {
-        if (isAlive)
+        RotatePlayer();
+        MovePlayer();
+        RotateWheels();
+    }
+
+    private void RotatePlayer()
+    {
+        Vector3 var = tank.transform.localEulerAngles;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
-            MoveHorizontally();
-            MoveVertically();
+            tank.transform.localEulerAngles = new Vector3(
+                var.x,
+                var.y + rotationSpeed * Time.deltaTime,
+                var.z
+                );
+            myRotateDirection = rotateDirection.Right;
+        }
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            tank.transform.localEulerAngles = new Vector3(
+                var.x,
+                var.y - rotationSpeed * Time.deltaTime,
+                var.z
+                );
+            myRotateDirection = rotateDirection.Left;
         }
     }
-    void MoveHorizontally()
+
+    private void MovePlayer()
     {
-        transform.Translate(horizontalSpeed * Time.deltaTime, 0, 0);
-    }
-    void MoveVertically()
-    {
-        // Move the player up if they press left mouse button
-        if (Input.GetMouseButtonDown(0) && playerCharacter.transform.position.y < maxYPos)
+        // Give the player forwards velocty
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            flySound.Play();
-            playerCharacter.transform.Translate(0, verticalSpeed * Time.deltaTime, 0);
-            downForce = gravity;
+            if (velocity < maxVelocity) velocity += acceleration;
         }
-        // Move the player down if they did not press left mouse button
+
+        // Give the player backwards velocity
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            if (velocity > -maxReverseVelocity) velocity -= deacceleration;
+        }
+
+        // Slow the player down if the velocity hasn't changed by pressing a key
+        if (velocity == oldVelocity)
+        {
+            if (velocity < 0) velocity += passiveSlowDown;
+            else if (velocity > 0) velocity -= passiveSlowDown;
+            if (velocity >= -passiveSlowDown/2f && velocity <= passiveSlowDown/2f && velocity != 0) velocity = 0;
+        }
+
+        // Apply our velocity to the rigid body
+        rb.velocity = tank.transform.forward * velocity * Time.deltaTime;
+        
+        // Save our current velocity
+        oldVelocity = velocity;
+
+        Debug.Log(velocity);
+    }
+
+    private void RotateWheels()
+    {
+        if (velocity == 0)
+        {
+
+        }
+        
         else
         {
-            if (downForce < gravityMax) downForce += gravityMultiplier;
-            playerCharacter.transform.Translate(0, -downForce * Time.deltaTime, 0);
+            if (velocity > 0)
+            {
+                // If velocity is greater than 0 all wheels should rotate counterclockwise
+                // Left-side wheels
+                RotateWheel(rotationSpeed, wheelBackLeft);
+                RotateWheel(rotationSpeed, wheelFrontLeft);
+
+                // Right-side wheels
+                RotateWheel(rotationSpeed, wheelBackRight);
+                RotateWheel(rotationSpeed, wheelFrontRight);
+
+                Debug.Log("Rotating Forward");
+            }
+
+            else if (velocity < 0)
+            {
+                // If velocity is smaller than 0 all wheels should rotate clockwise
+                // Left-side wheels
+                RotateWheel(-rotationSpeed, wheelBackLeft);
+                RotateWheel(-rotationSpeed, wheelFrontLeft);
+
+                // Right-side wheels
+                RotateWheel(-rotationSpeed, wheelBackRight);
+                RotateWheel(-rotationSpeed, wheelFrontRight);
+
+                Debug.Log("Rotating Backward");
+            }
         }
+
+        myRotateDirection = rotateDirection.None;
+    }
+
+    private void RotateWheel(float wheelRotation, GameObject wheel)
+    {
+        wheel.transform.localEulerAngles = new Vector3(
+            wheel.transform.localEulerAngles.x + wheelRotation * Time.deltaTime,
+            wheel.transform.localEulerAngles.y,
+            wheel.transform.localEulerAngles.z
+            );
+
+        Debug.Log(wheelRotation);
     }
 }
