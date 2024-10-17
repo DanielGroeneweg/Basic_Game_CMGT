@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Pipe
   - Grass
+  - FxTemporaire
+  - PlayerBullet
+  - EnemyBullet
+  - SuperBullet
   layers:
   - Default
   - TransparentFX
