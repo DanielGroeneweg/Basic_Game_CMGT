@@ -9,24 +9,25 @@ public class AmmoCratePickUp : MonoBehaviour
     private CanvasManager canvasManager;
     private GameObject player;
     private GameObject playerTank;
-    private GameObject leftBackWheel;
-    private GameObject rightBackWheel;
-    private GameObject leftFrontWheel;
-    private GameObject rightFrontWheel;
+    private PlayerAimingAndShooting playerScript;
+    private PickUpSpawner pickUpSpawner;
     public void Start()
     {
         canvasManager = GameObject.Find("Canvas").GetComponent<CanvasManager>();
         player = GameObject.Find("PlayerItems");
         playerTank = GameObject.Find("PlayerTank");
+        pickUpSpawner = GameObject.Find("PickUpSpawnPlatform").GetComponent<PickUpSpawner>();
+        playerScript = player.GetComponent<PlayerAimingAndShooting>();
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject == playerTank || collision.gameObject == leftBackWheel || collision.gameObject == rightBackWheel || collision.gameObject == leftFrontWheel || collision.gameObject == rightFrontWheel)
+        if (collision.gameObject == playerTank && !playerScript.hasSuperBullet)
         {
             canvasManager.SwitchBulletImageVisibility();
-            player.GetComponent<PlayerAimingAndShooting>().hasSuperBullet = true;
-            //Destroy(gameObject);
+            playerScript.hasSuperBullet = true;
+            pickUpSpawner.hasSpawned = false;
+            Destroy(gameObject);
         }
     }
 }

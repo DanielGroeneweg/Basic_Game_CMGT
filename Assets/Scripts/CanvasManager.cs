@@ -12,6 +12,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject heart1;
     public GameObject heart2;
     public GameObject heart3;
+    public SceneLoader sceneLoader;
     private float health = 4;
     private float score = 0;
 
@@ -43,7 +44,7 @@ public class CanvasManager : MonoBehaviour
                 heart1.SetActive(false);
                 break;
             case 0:
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                sceneLoader.LoadScene("MainMenuScene");
                 break;
         }
     }

@@ -176,8 +176,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9133031649834912603}
   - component: {fileID: 3059028246251266222}
-  - component: {fileID: 96743410097104252}
   - component: {fileID: 5024353211960703657}
+  - component: {fileID: 9014065764276853350}
   m_Layer: 0
   m_Name: AmmoCrate
   m_TagString: Untagged
@@ -195,7 +195,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2, y: 8, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 329433768426817421}
@@ -220,24 +220,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.4, y: 0.4, z: 0.4}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!114 &96743410097104252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4171230346944545624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc30d601adcf5f04f8a3db986609551d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &5024353211960703657
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -265,6 +253,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &9014065764276853350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4171230346944545624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc30d601adcf5f04f8a3db986609551d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5630009878707023882
 GameObject:
   m_ObjectHideFlags: 0

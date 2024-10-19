@@ -11,38 +11,44 @@ public class BulletHandler : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collision)
     {
-        switch (gameObject.tag)
+        if (collision.tag != "CenterRoom" && collision.tag != "BottomLeftRoom" && collision.tag != "BottomRightRoom" && collision.tag != "TopRightRoom" && collision.tag != "TopLeftRoom")
         {
-            case "EnemyBullet":
-                if (collision.gameObject.tag == "Player")
-                {
-                    canvasManager.DamagePlayer();
-                }
-                break;
-            case "PlayerBullet":
-                if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
-                {
-                    canvasManager.IncreaseScore();
-                }
-                break;
-            case "SuperBullet":
-                if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
-                {
-                    GameObject obj = collision.gameObject;
-                    while (obj.tag != "Enemy")
+            switch (gameObject.tag)
+            {
+                case "EnemyBullet":
+                    if (collision.gameObject.tag == "Player")
                     {
-                        obj = obj.transform.parent.gameObject;
-                        Debug.Log(obj.name);
+                        canvasManager.DamagePlayer();
                     }
-                    Destroy(obj);
-                    Debug.Log("Bullet Position: " + transform.position);
+                    break;
+                case "PlayerBullet":
+                    if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
+                    {
+                        GameObject obj = collision.gameObject;
+                        if (obj.tag != "Enemy")
+                        {
+                            obj = obj.transform.root.gameObject;
+                        }
 
-                    canvasManager.IncreaseScore();
-                }
-                break;
+                        obj.GetComponent<EnemyHandler>().DamageEnemy();
+                    }
+                    break;
+                case "SuperBullet":
+                    if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
+                    {
+                        GameObject obj = collision.gameObject;
+                        if (obj.tag != "Enemy")
+                        {
+                            obj = obj.transform.root.gameObject;
+                        }
+                        Destroy(obj);
+                        canvasManager.IncreaseScore();
+                    }
+                    break;
+            }
+
+            if (gameObject.tag == "SuperBullet" && (collision.tag == "Enemy" || collision.tag == "EnemyBody")) return;
+            else Destroy(gameObject);
         }
-
-        if (gameObject.tag == "SuperBullet" && (collision.tag == "Enemy" || collision.tag == "EnemyBody")) return;
-        else Destroy(gameObject);
     }
 }

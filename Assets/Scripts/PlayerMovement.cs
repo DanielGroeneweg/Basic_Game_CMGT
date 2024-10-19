@@ -1,34 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Xml.Schema;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // A reference to the body of the player tank
     public GameObject tank;
 
     #region movement
+    // The acceleration when the player is driving
     public float acceleration;
+    
+    // The maximum velocity the player should have
     public float maxVelocity;
-    public float deacceleration;
-    public float maxReverseVelocity;
-    public float passiveSlowDown;
-    public Rigidbody rb;
 
+    // The rate at which the player deaccelerates when breaking
+    public float deacceleration;
+
+    // The maximum velocity the player should have when reversing
+    public float maxReverseVelocity;
+
+    // The rate at which the player deaccelerates when not giving input
+    public float passiveSlowDown;
+
+    // A reference to the rigidbody on the player
+    public Rigidbody rb;
+    
+    // An enum to check where the player is for the enemy AI
+    public enum rooms { Center, BottomLeft, BottomRight, TopLeft, TopRight };
+    public rooms isInRoom = rooms.Center;
+
+    // A float to keep track of the player's velocity
     private float velocity;
+
+    // A float to be able to compare the player's current and previous velocity
     private float oldVelocity;
     #endregion
 
+    // The speed at which the player tank rotates when steering
     public float rotationSpeed;
 
     #region wheel rotation
+    // A reference for every wheel to animate them spinning when driving
     public GameObject wheelFrontLeft;
     public GameObject wheelFrontRight;
     public GameObject wheelBackLeft;
     public GameObject wheelBackRight;
+
+    // The speed at which the wheels should spin when driving
     public float wheelRotationSpeed;
+
+    // An enum to control the direction a wheel is supposed to rotate
     private enum rotateDirection { Left, Right, None};
     private rotateDirection myRotateDirection = rotateDirection.None;
     #endregion
@@ -41,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotatePlayer()
     {
+        // Rotate the player
         Vector3 var = tank.transform.localEulerAngles;
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -49,9 +70,12 @@ public class PlayerMovement : MonoBehaviour
                 var.y + rotationSpeed * Time.deltaTime,
                 var.z
                 );
+            
+            // Save our rotate direction for the wheel animations
             myRotateDirection = rotateDirection.Right;
         }
 
+        // Rotate the player
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             tank.transform.localEulerAngles = new Vector3(
@@ -59,6 +83,8 @@ public class PlayerMovement : MonoBehaviour
                 var.y - rotationSpeed * Time.deltaTime,
                 var.z
                 );
+
+            // Save our rotate direction for the wheel animations
             myRotateDirection = rotateDirection.Left;
         }
     }
@@ -148,11 +174,36 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        // Reset the rotate direction
         myRotateDirection = rotateDirection.None;
     }
 
     private void RotateWheel(float wheelRotation, GameObject wheel)
     {
         wheel.transform.Rotate(new Vector3(wheelRotation * Time.deltaTime, 0, 0));
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // When the player enters an area (I called them rooms) by hitting the hitbox of that room, I change the enum to that room
+        // to be able to make the enemies use a movement pattern to move towards the player when they are not close to the player
+        switch (other.tag)
+        {
+            case "CenterRoom":
+                if (isInRoom != rooms.Center) isInRoom = rooms.Center;
+                break;
+            case "BottomLeftRoom":
+                if (isInRoom != rooms.BottomLeft) isInRoom = rooms.BottomLeft;
+                    break;
+            case "TopLeftRoom":
+                if (isInRoom != rooms.TopLeft) isInRoom = rooms.TopLeft;
+                break;
+            case "BottomRightRoom":
+                if (isInRoom != rooms.BottomRight) isInRoom = rooms.BottomRight;
+                break;
+            case "TopRightRoom":
+                if (isInRoom != rooms.TopRight) isInRoom = rooms.TopRight;
+                break;
+        }
     }
 }

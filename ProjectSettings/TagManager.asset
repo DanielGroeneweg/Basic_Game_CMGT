@@ -12,6 +12,11 @@ TagManager:
   - SuperBullet
   - Enemy
   - EnemyBody
+  - CenterRoom
+  - BottomLeftRoom
+  - BottomRightRoom
+  - TopLeftRoom
+  - TopRightRoom
   layers:
   - Default
   - TransparentFX
