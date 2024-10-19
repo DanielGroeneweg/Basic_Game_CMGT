@@ -88,7 +88,7 @@ public class EnemyMovement : MonoBehaviour
         // If the enemy can see the player, rotate it towards the player
         RaycastHit hit;
         var rayDirection = player.transform.position - transform.position;
-        if ((Physics.Raycast(tank.transform.position, rayDirection, out hit) && hit.transform == player.transform) && isInRoom.ToString() == playerMovement.isInRoom.ToString())
+        if (Physics.Raycast(tank.transform.position, rayDirection, out hit) && hit.transform == player.transform)
         {
             destinationType = destinationTypes.Player;
             isTraveling = false;
@@ -115,6 +115,26 @@ public class EnemyMovement : MonoBehaviour
 
             // Rotate enemy to destination
             destinationType = destinationTypes.Room;
+
+            // Set the destinationTransform
+            switch (destination)
+            {
+                case rooms.BottomLeft:
+                    destinationTransform = bottomLeftRoom;
+                    break;
+                case rooms.BottomRight:
+                    destinationTransform = bottomRightRoom;
+                    break;
+                case rooms.TopRight:
+                    destinationTransform = topRightRoom;
+                    break;
+                case rooms.TopLeft:
+                    destinationTransform = topLeftRoom;
+                    break;
+                case rooms.Center:
+                    destinationTransform = centerRoom;
+                    break;
+            }
         }
 
         if (destinationType == destinationTypes.Player) RotateEnemy(playerTank.transform);
@@ -123,16 +143,17 @@ public class EnemyMovement : MonoBehaviour
     private void RotateEnemy(Transform target)
     {
         // Find the direction to the target in world space, but keep only the X and Z axes (ignore Y-axis)
-        Vector3 directionToPlayer = new Vector3(
+        Vector3 toPlayer = new Vector3(
             target.position.x - tank.transform.position.x,
             0,
             target.position.z - tank.transform.position.z
         );
 
         // Create a rotation towards the target, keeping the Y-axis rotation only
-        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        Quaternion targetRotation = Quaternion.LookRotation(toPlayer);
 
         // Smoothly rotate towards the target rotation, limiting to Y-axis
+
         tank.transform.rotation = Quaternion.Lerp(
             tank.transform.rotation,
             targetRotation,
@@ -162,7 +183,6 @@ public class EnemyMovement : MonoBehaviour
             {
                 canGoToNextDestination = true;
                 isTraveling = false;
-                Debug.Log("Arrived!");
             }
         }
         
@@ -176,7 +196,6 @@ public class EnemyMovement : MonoBehaviour
          * After this the enemy should move to the center room.
          * After this the enemy should move towards the room the player is in.
          * ====================================================================================================================== */
-        Debug.Log("Determining Destination!");
         if (canGoToNextDestination)
         {
             // Make the enemy first go to the center room to make it not run into walls
@@ -211,29 +230,6 @@ public class EnemyMovement : MonoBehaviour
 
         // Set the destination to the room the enemy is currently in to allow it to move out of that room
         else destination = isInRoom;
-
-        Debug.Log("Destination: " + destination.ToString());
-
-        // Set the destination position (transform) to the one corresponding with the destination
-        switch (destination)
-        {
-            case rooms.BottomLeft:
-                destinationTransform = bottomLeftRoom;
-                break;
-            case rooms.BottomRight:
-                destinationTransform = bottomRightRoom;
-                break;
-            case rooms.TopRight:
-                destinationTransform = topRightRoom;
-                break;
-            case rooms.TopLeft:
-                destinationTransform = topLeftRoom;
-                break;
-            case rooms.Center:
-                destinationTransform = centerRoom;
-                Debug.Log(destinationTransform.position);
-                break;
-        }
     }
     private void RotateWheels()
     {

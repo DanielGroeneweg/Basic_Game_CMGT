@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4556467631810033337}
   - component: {fileID: 889918407109543765}
   - component: {fileID: 4231148609728598343}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TankFree_Wheel_b_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,7 +380,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 2
 --- !u!1 &4205195196547633986
 GameObject:
@@ -394,7 +394,7 @@ GameObject:
   - component: {fileID: 6046690145105828221}
   - component: {fileID: 8557854663235063264}
   - component: {fileID: 3814702657092683680}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TankFree_Wheel_f_right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 769438737166004834}
   - component: {fileID: 2371389781927813664}
   - component: {fileID: 413121868447033654}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TankFree_Wheel_b_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 8275800824583817059}
   - component: {fileID: 4025256501104722500}
   - component: {fileID: 2161167080978625585}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TankFree_Wheel_f_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -39,7 +39,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
     {
         RotateTop();
 
-        if (canShoot && Input.GetMouseButton(0)) Shoot();
+        if (canShoot && Input.GetMouseButtonDown(0)) Shoot();
         else ShootCooldown();
     }
 
@@ -96,10 +96,5 @@ public class PlayerAimingAndShooting : MonoBehaviour
 
         // Set canShoot to false to make us wait for the cooldown to shoot again
         canShoot = false;
-    }
-
-    public void Help()
-    {
-        Debug.Log("Done!");
     }
 }
