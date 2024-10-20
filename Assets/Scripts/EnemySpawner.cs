@@ -37,19 +37,19 @@ public class EnemySpawner : MonoBehaviour
         {
             case PlayerMovement.rooms.TopLeft:
                 spawners.RemoveAt(0);
-                spawners.RemoveAt(1);
+                spawners.RemoveAt(0);
                 break;
             case PlayerMovement.rooms.TopRight:
                 spawners.RemoveAt(2);
-                spawners.RemoveAt(3);
+                spawners.RemoveAt(2);
                 break;
             case PlayerMovement.rooms.BottomLeft:
                 spawners.RemoveAt(4);
-                spawners.RemoveAt(5);
+                spawners.RemoveAt(4);
                 break;
             case PlayerMovement.rooms.BottomRight:
                 spawners.RemoveAt(6);
-                spawners.RemoveAt(7);
+                spawners.RemoveAt(6);
                 break;
             case PlayerMovement.rooms.Center:
                 break;
@@ -57,7 +57,7 @@ public class EnemySpawner : MonoBehaviour
 
         int rand = Random.Range(0, spawners.Count);
 
-        Instantiate(enemyPrefab, spawners[rand].transform.position, Quaternion.identity);
+        Instantiate(enemyPrefab, spawners[rand].transform.position, spawners[rand].transform.rotation);
 
         canSpawn = false;
     }

@@ -17,7 +17,7 @@ public class EnemyMovement : MonoBehaviour
     public Rigidbody rb;
 
     // An enum to check where the enemy is for the movement
-    public enum rooms { Center, BottomLeft, BottomRight, TopLeft, TopRight };
+    public enum rooms { BottomLeft, BottomRight, TopLeft, TopRight, Center };
     private rooms isInRoom;
     private rooms destination;
     
@@ -78,8 +78,8 @@ public class EnemyMovement : MonoBehaviour
     }
     private void Update()
     {
-        CheckDestination();
         MoveEnemyForwards();
+        CheckDestination();
         RotateWheels();
     }
 
@@ -196,12 +196,15 @@ public class EnemyMovement : MonoBehaviour
          * After this the enemy should move to the center room.
          * After this the enemy should move towards the room the player is in.
          * ====================================================================================================================== */
+        CheckInWhichRoomIAM();
+
         if (canGoToNextDestination)
         {
             // Make the enemy first go to the center room to make it not run into walls
             if (isInRoom != rooms.Center)
             {
                 destination = rooms.Center;
+                Debug.Log("Going to center!");
             }
 
             else
@@ -229,7 +232,10 @@ public class EnemyMovement : MonoBehaviour
         }
 
         // Set the destination to the room the enemy is currently in to allow it to move out of that room
-        else destination = isInRoom;
+        else
+        {
+            destination = isInRoom;
+        }
     }
     private void RotateWheels()
     {
@@ -253,19 +259,19 @@ public class EnemyMovement : MonoBehaviour
         switch (other.tag)
         {
             case "CenterRoom":
-                if (isInRoom != rooms.Center) isInRoom = rooms.Center;
+                isInRoom = rooms.Center;
                 break;
             case "BottomLeftRoom":
-                if (isInRoom != rooms.BottomLeft) isInRoom = rooms.BottomLeft;
+                isInRoom = rooms.BottomLeft;
                 break;
             case "TopLeftRoom":
-                if (isInRoom != rooms.TopLeft) isInRoom = rooms.TopLeft;
+                isInRoom = rooms.TopLeft;
                 break;
             case "BottomRightRoom":
-                if (isInRoom != rooms.BottomRight) isInRoom = rooms.BottomRight;
+                isInRoom = rooms.BottomRight;
                 break;
             case "TopRightRoom":
-                if (isInRoom != rooms.TopRight) isInRoom = rooms.TopRight;
+                isInRoom = rooms.TopRight;
                 break;
             case "EnemyCenterRoom":
                 if (isTraveling)
@@ -274,6 +280,32 @@ public class EnemyMovement : MonoBehaviour
                     isTraveling = false;
                 }
                 break;
+        }
+    }
+
+    private void CheckInWhichRoomIAM()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        foreach (Collider hitCollider in hitColliders)
+        {
+            switch (hitCollider.gameObject.tag)
+            {
+                case "CenterRoom":
+                    isInRoom = rooms.Center;
+                    break;
+                case "BottomLeftRoom":
+                    isInRoom = rooms.BottomLeft;
+                    break;
+                case "TopLeftRoom":
+                    isInRoom = rooms.TopLeft;
+                    break;
+                case "BottomRightRoom":
+                    isInRoom = rooms.BottomRight;
+                    break;
+                case "TopRightRoom":
+                    isInRoom = rooms.TopRight;
+                    break;
+            }
         }
     }
 }

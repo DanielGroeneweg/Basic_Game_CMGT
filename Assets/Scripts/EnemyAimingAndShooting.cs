@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class EnemyAimingAndShooting : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class EnemyAimingAndShooting : MonoBehaviour
     // Privates
     private float shootCooldown;
     private bool canShoot = true;
+    #endregion
+
+    #region particle variables
+    public GameObject particle;
+    public AudioSource shootingSound;
+    private List<GameObject> particleList;
     #endregion
 
     public void Start()
@@ -85,10 +92,25 @@ public class EnemyAimingAndShooting : MonoBehaviour
         {
             // Create a bullet at the bullet spawn point gameobject's transform
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+            
             // Set our bullet speed
             bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+            
             // Set canShoot to false to make us wait for the cooldown to shoot again
             canShoot = false;
+
+            // Spawn the smoke particle
+            SpawnParticle();
+
+            // Start the explosion sound
+            shootingSound.Play();
         }
+    }
+
+    private void SpawnParticle()
+    {
+        GameObject myParticle = Instantiate(particle);
+        myParticle.transform.position = new Vector3(bulletSpawnPoint.transform.position.x, myParticle.transform.position.y, bulletSpawnPoint.transform.position.z);
+        myParticle.SetActive(true);
     }
 }

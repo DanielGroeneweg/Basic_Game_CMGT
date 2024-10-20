@@ -95,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             if (velocity < maxVelocity) velocity += acceleration;
+            if (velocity > maxVelocity) velocity = maxVelocity;
         }
 
         // Give the player backwards velocity

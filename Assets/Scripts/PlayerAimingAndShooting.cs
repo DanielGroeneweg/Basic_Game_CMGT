@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerAimingAndShooting : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class PlayerAimingAndShooting : MonoBehaviour
     // Privates
     private float shootCooldown;
     private bool canShoot = true;
+    #endregion
+
+    #region particle variables
+    public GameObject particle;
+    public AudioSource shootingSound;
+    private List<GameObject> particleList;
     #endregion
 
     public void Start()
@@ -96,5 +103,18 @@ public class PlayerAimingAndShooting : MonoBehaviour
 
         // Set canShoot to false to make us wait for the cooldown to shoot again
         canShoot = false;
+
+        // Spawn a particle for the smoke
+        SpawnParticle();
+
+        // Start the shooting sound
+        shootingSound.Play();
+    }
+
+    private void SpawnParticle()
+    {
+        GameObject myParticle = Instantiate(particle);
+        myParticle.transform.position = new Vector3(bulletSpawnPoint.transform.position.x, myParticle.transform.position.y, bulletSpawnPoint.transform.position.z);
+        myParticle.SetActive(true);
     }
 }
