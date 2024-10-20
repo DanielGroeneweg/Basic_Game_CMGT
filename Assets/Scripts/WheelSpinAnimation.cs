@@ -7,7 +7,7 @@ public class WheelSpinAnimation : MonoBehaviour
     public float rotationSpeed = 50;
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.None;
     }
     void Update()
     {

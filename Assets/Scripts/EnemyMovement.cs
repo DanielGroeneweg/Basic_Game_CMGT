@@ -267,6 +267,13 @@ public class EnemyMovement : MonoBehaviour
             case "TopRightRoom":
                 if (isInRoom != rooms.TopRight) isInRoom = rooms.TopRight;
                 break;
+            case "EnemyCenterRoom":
+                if (isTraveling)
+                {
+                    canGoToNextDestination = true;
+                    isTraveling = false;
+                }
+                break;
         }
     }
 }

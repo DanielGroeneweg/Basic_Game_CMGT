@@ -17,6 +17,7 @@ TagManager:
   - BottomRightRoom
   - TopLeftRoom
   - TopRightRoom
+  - EnemyCenterRoom
   layers:
   - Default
   - TransparentFX

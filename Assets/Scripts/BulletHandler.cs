@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class BulletHandler : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.tag != "CenterRoom" && collision.tag != "BottomLeftRoom" && collision.tag != "BottomRightRoom" && collision.tag != "TopRightRoom" && collision.tag != "TopLeftRoom")
+        if (collision.tag != "CenterRoom" && collision.tag != "BottomLeftRoom" && collision.tag != "BottomRightRoom" && collision.tag != "TopRightRoom" && collision.tag != "TopLeftRoom" && collision.tag != "EnemyCenterRoom")
         {
             switch (gameObject.tag)
             {

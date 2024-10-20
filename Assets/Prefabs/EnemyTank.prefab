@@ -327,7 +327,7 @@ MonoBehaviour:
   acceleration: 15
   maxVelocity: 200
   rb: {fileID: 7301750157203306255}
-  roomDestinationOffset: 1
+  roomDestinationOffset: 2.5
   rotationSpeed: 1.5
   wheelFrontLeft: {fileID: 7130877665670209353}
   wheelFrontRight: {fileID: 4205195196547633986}
