@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4626912455347354657}
   - component: {fileID: -8877465094849896503}
   - component: {fileID: -4028943713470377122}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy_Missile
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
@@ -157,9 +157,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6286281592443155218}
     m_Modifications:
+    - target: {fileID: 100000, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
       propertyPath: m_Name
       value: Bullet Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 4575df893a6e3f64a8283dee38413a34, type: 3}
       propertyPath: m_LocalPosition.x

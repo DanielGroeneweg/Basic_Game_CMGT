@@ -203,11 +203,7 @@ public class EnemyMovement : MonoBehaviour
         if (canGoToNextDestination)
         {
             // Make the enemy first go to the center room to make it not run into walls
-            if (isInRoom != rooms.Center)
-            {
-                destination = rooms.Center;
-                Debug.Log("Going to center!");
-            }
+            if (isInRoom != rooms.Center) destination = rooms.Center;
 
             else
             {

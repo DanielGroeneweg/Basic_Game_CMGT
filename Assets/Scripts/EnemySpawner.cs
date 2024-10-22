@@ -9,29 +9,60 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     public PlayerMovement _PlayerMovement;
     public float spawnCooldown;
+    public float cooldownReduction;
+    public float minCooldown;
+    public float SpawnsForIncrease;
 
-    // Spawner Objects:
-    public GameObject spawner1;
-    public GameObject spawner2;
-    public GameObject spawner3;
-    public GameObject spawner4;
-    public GameObject spawner5;
-    public GameObject spawner6;
-    public GameObject spawner7;
-    public GameObject spawner8;
+    public List<GameObject> spawnerList;
 
-    private float cooldownTimer;
+    private float cooldownTimer = 0;
+    private float howManyEnemiesToSpawn = 1;
+    private float maxEnemySpawnAmount;
+    private float timesSpawned;
     private bool canSpawn = true;
 
+    private void Start()
+    {
+        List<GameObject> spawners = new List<GameObject>();
+        foreach (GameObject spawner in spawnerList) spawners.Add(spawner);
+        maxEnemySpawnAmount = spawners.Count - 2f;
+    }
     // Update is called once per frame
     void Update()
     {
-        if (canSpawn) SpawnEnemy();
+        if (canSpawn) SpawnEnemies();
         else DoCooldown();
     }
-    private void SpawnEnemy()
+    private void SpawnEnemies()
     {
-        List<GameObject> spawners = new List<GameObject> {spawner1, spawner2, spawner3, spawner4, spawner5, spawner6, spawner7, spawner8};
+        // Spawn the enemies
+        Spawn();
+
+        // Increase how many enemies are spawned over time
+        IncreaseSpawnAmount();
+
+        // Increase how often enemies are spawned over time
+        IncreaseSpawnRate();
+
+        // Disable spawning for next frame
+        canSpawn = false;
+    }
+    private void DoCooldown()
+    {
+        cooldownTimer += Time.deltaTime;
+        if (cooldownTimer >= spawnCooldown)
+        {
+            canSpawn = true;
+            cooldownTimer = 0;
+        }
+    }
+
+    private void Spawn()
+    {
+        // Get a list of all spawners, then remove the ones in the same room as the player
+        // Every room has 2 hitboxes that need to be removed from the list to make enemies not spawn in the same room as the player
+        List<GameObject> spawners = new List<GameObject>();
+        foreach (GameObject spawner in spawnerList) spawners.Add(spawner);
 
         switch (_PlayerMovement.isInRoom)
         {
@@ -55,19 +86,33 @@ public class EnemySpawner : MonoBehaviour
                 break;
         }
 
-        int rand = Random.Range(0, spawners.Count);
-
-        Instantiate(enemyPrefab, spawners[rand].transform.position, spawners[rand].transform.rotation);
-
-        canSpawn = false;
-    }
-    private void DoCooldown()
-    {
-        cooldownTimer += Time.deltaTime;
-        if (cooldownTimer >= spawnCooldown)
+        // Spawn enemies equal to the value of "howManyEnemiesToSpawn"
+        for (int i = 1; i <= howManyEnemiesToSpawn; i++)
         {
-            canSpawn = true;
-            cooldownTimer = 0;
+            // Spawn an enemy on a random spawner chosen from the list of spawners
+            int rand = Random.Range(0, spawners.Count);
+            Instantiate(enemyPrefab, spawners[rand].transform.position, spawners[rand].transform.rotation);
+
+            // Remove the spawner from the list to prevent two enemies spawning at the same spot
+            spawners.RemoveAt(rand);
         }
+        Debug.Log("Spawned " + howManyEnemiesToSpawn + " enemies!");
+    }
+
+    private void IncreaseSpawnAmount()
+    {
+        // Increase the enemies spawned for every "SpawnsForIncrease" times we have spawned a series of enemies
+        timesSpawned++;
+        if (timesSpawned >= SpawnsForIncrease)
+        {
+            timesSpawned = 0;
+            if (howManyEnemiesToSpawn < maxEnemySpawnAmount) howManyEnemiesToSpawn++;
+        }
+    }
+
+    private void IncreaseSpawnRate()
+    {
+        if (spawnCooldown > minCooldown) spawnCooldown -= cooldownReduction;
+        else if (spawnCooldown < minCooldown) spawnCooldown = minCooldown;
     }
 }

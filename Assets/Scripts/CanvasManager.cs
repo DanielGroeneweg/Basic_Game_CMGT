@@ -4,17 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class CanvasManager : MonoBehaviour
 {
+    public UnityEvent playerDied;
+    public IntCount score;
+    public IntCount playerHealth;
     public Image superBulletImage;
-    public GameObject scoreText;
-    public GameObject heart1;
-    public GameObject heart2;
-    public GameObject heart3;
+    public TMP_Text scoreText;
+    public List<GameObject> heartImages;
     public SceneLoader sceneLoader;
-    private float health = 4;
-    private float score = 0;
 
     private Color imageColor;
 
@@ -31,28 +31,18 @@ public class CanvasManager : MonoBehaviour
 
     public void DamagePlayer()
     {
-        health--;
-        switch (health)
-        {
-            case 3:
-                heart3.SetActive(false);
-                break;
-            case 2:
-                heart2.SetActive(false);
-                break;
-            case 1:
-                heart1.SetActive(false);
-                break;
-            case 0:
-                sceneLoader.LoadScene("MainMenuScene");
-                break;
-        }
+        // Decrease health by 1, then remove a heart from the HUD
+        playerHealth.ChangeValue(-1);
+        if (playerHealth.value > 0) heartImages[(int)playerHealth.value - 1].SetActive(false);
+
+        // Load end screen if player died
+        if (playerHealth.value <= 0) sceneLoader.LoadScene("EndScene");
     }
 
     public void IncreaseScore()
     {
-        score++;
-        TMP_Text text = scoreText.GetComponent<TMP_Text>();
-        text.text = "Score: " + score;
+        score.ChangeValue(1);
+        scoreText.text = "Score: " + score.value;
+        Debug.Log(score.value);
     }
 }
