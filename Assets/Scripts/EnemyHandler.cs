@@ -12,11 +12,14 @@ public class EnemyHandler : MonoBehaviour
     private float healthBarMaxSize;
     private CanvasManager canvasManager;
 
+    private void Awake()
+    {
+        maxHealth = health;
+        healthBarMaxSize = healthBar.transform.localScale.x;
+    }
     private void Start()
     {
         canvasManager = GameObject.Find("Canvas").GetComponent<CanvasManager>();
-        maxHealth = health;
-        healthBarMaxSize = healthBar.transform.localScale.x;
     }
     void Update()
     {

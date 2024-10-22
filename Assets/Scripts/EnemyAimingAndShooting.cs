@@ -50,7 +50,7 @@ public class EnemyAimingAndShooting : MonoBehaviour
     private void Aim()
     {
         RaycastHit hit;
-        var rayDirection = playerTank.transform.position - tankTop.transform.position;
+        Vector3 rayDirection = playerTank.transform.position - tankTop.transform.position;
         if (Physics.Raycast(tankTop.transform.position, rayDirection, out hit) && hit.transform == player.transform)
         {
             // Find the direction to the player in world space, but keep only the X and Z axes (ignore Y-axis)
@@ -70,6 +70,8 @@ public class EnemyAimingAndShooting : MonoBehaviour
                 rotationSpeed * Time.deltaTime
             );
         }
+
+        Debug.DrawRay(tankTop.transform.position, rayDirection, Color.red);
     }
 
     private void ShootCooldown()
@@ -105,6 +107,8 @@ public class EnemyAimingAndShooting : MonoBehaviour
             // Start the explosion sound
             shootingSound.Play();
         }
+
+        Debug.DrawRay(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.forward, Color.red);
     }
 
     private void SpawnParticle()

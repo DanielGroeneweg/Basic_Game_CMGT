@@ -11,7 +11,7 @@ public class PickUpSpawner : MonoBehaviour
 
     private float cooldownTimer = 0f;
     private bool canSpawn = false;
-    void Update()
+    void FixedUpdate()
     {
         if (!hasSpawned)
         {

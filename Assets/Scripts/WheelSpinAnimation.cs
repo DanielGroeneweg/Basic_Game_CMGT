@@ -5,11 +5,11 @@ using UnityEngine;
 public class WheelSpinAnimation : MonoBehaviour
 {
     public float rotationSpeed = 50;
-    private void Start()
+    private void Awake()
     {
         Cursor.lockState = CursorLockMode.None;
     }
-    void Update()
+    void FixedUpdate()
     {
         transform.Rotate(new Vector3(rotationSpeed, 0, 0) * Time.deltaTime);
     }

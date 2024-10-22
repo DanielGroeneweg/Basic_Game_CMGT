@@ -33,6 +33,12 @@ public class PlayerMovement : MonoBehaviour
 
     // A float to be able to compare the player's current and previous velocity
     private float oldVelocity;
+
+    // Bools for inputs
+    private bool pressedForward;
+    private bool pressedBackward;
+    private bool pressedLeft;
+    private bool pressedRight;
     #endregion
 
     // The speed at which the player tank rotates when steering
@@ -52,18 +58,31 @@ public class PlayerMovement : MonoBehaviour
     private enum rotateDirection { Left, Right, None};
     private rotateDirection myRotateDirection = rotateDirection.None;
     #endregion
-    private void Update()
+    private void FixedUpdate()
     {
         RotatePlayer();
         MovePlayer();
         RotateWheels();
+
+        pressedLeft = false;
+        pressedRight = false;
+        pressedForward = false;
+        pressedBackward = false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) pressedLeft = true;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) pressedRight = true;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) pressedForward = true;
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) pressedBackward = true;
     }
 
     private void RotatePlayer()
     {
         // Rotate the player
         Vector3 var = tank.transform.localEulerAngles;
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (pressedRight)
         {
             tank.transform.localEulerAngles = new Vector3(
                 var.x,
@@ -76,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Rotate the player
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if (pressedLeft)
         {
             tank.transform.localEulerAngles = new Vector3(
                 var.x,
@@ -92,14 +111,14 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         // Give the player forwards velocty
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (pressedForward)
         {
             if (velocity < maxVelocity) velocity += acceleration;
             if (velocity > maxVelocity) velocity = maxVelocity;
         }
 
         // Give the player backwards velocity
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if (pressedBackward)
         {
             if (velocity > -maxReverseVelocity) velocity -= deacceleration;
         }
@@ -113,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Apply our velocity to the rigid body
-        rb.velocity = tank.transform.forward * velocity * Time.deltaTime;
+        rb.velocity = tank.transform.forward * velocity;
         
         // Save our current velocity
         oldVelocity = velocity;
@@ -181,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotateWheel(float wheelRotation, GameObject wheel)
     {
-        wheel.transform.Rotate(new Vector3(wheelRotation * Time.deltaTime, 0, 0));
+        wheel.transform.Rotate(new Vector3(wheelRotation, 0, 0));
     }
 
     private void OnTriggerEnter(Collider other)

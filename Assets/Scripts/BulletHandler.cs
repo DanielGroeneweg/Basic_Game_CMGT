@@ -6,10 +6,13 @@ public class BulletHandler : MonoBehaviour
 {
     public GameObject particle;
     private CanvasManager canvasManager;
+    private void Awake()
+    {
+        particle.SetActive(false);
+    }
     private void Start()
     {
         canvasManager = GameObject.Find("Canvas").GetComponent<CanvasManager>();
-        particle.SetActive(false);
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -20,10 +23,7 @@ public class BulletHandler : MonoBehaviour
             {
                 case "EnemyBullet":
                     // Damage the player
-                    if (collision.gameObject.tag == "Player")
-                    {
-                        canvasManager.DamagePlayer();
-                    }
+                    if (collision.gameObject.tag == "Player") canvasManager.DamagePlayer();
                     break;
                 case "PlayerBullet":
                     if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")

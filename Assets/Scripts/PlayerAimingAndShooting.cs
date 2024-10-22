@@ -38,14 +38,14 @@ public class PlayerAimingAndShooting : MonoBehaviour
     private List<GameObject> particleList;
     #endregion
 
-    public void Start()
+    private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
+
     public void Update()
     {
         RotateTop();
-
         if (canShoot && Input.GetMouseButtonDown(0)) Shoot();
         else ShootCooldown();
     }

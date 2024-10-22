@@ -66,17 +66,19 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
+        // Player References:
         player = GameObject.Find("PlayerItems");
         playerMovement = player.GetComponent<PlayerMovement>();
         playerTank = GameObject.Find("PlayerTank");
 
+        // Room references:
         centerRoom = GameObject.Find("CenterRoom").GetComponent<Transform>();
         topLeftRoom = GameObject.Find("TopL").GetComponent<Transform>();
         topRightRoom = GameObject.Find("TopR").GetComponent<Transform>();
         bottomLeftRoom = GameObject.Find("BotL").GetComponent<Transform>();
         bottomRightRoom = GameObject.Find("BotR").GetComponent<Transform>();
     }
-    private void Update()
+    private void FixedUpdate()
     {
         MoveEnemyForwards();
         CheckDestination();
@@ -157,7 +159,7 @@ public class EnemyMovement : MonoBehaviour
         tank.transform.rotation = Quaternion.Lerp(
             tank.transform.rotation,
             targetRotation,
-            rotationSpeed * Time.deltaTime
+            rotationSpeed
         );
     }
 
@@ -170,7 +172,7 @@ public class EnemyMovement : MonoBehaviour
         if (velocity > maxVelocity) velocity = maxVelocity;
 
         // Apply the enemy's velocity to the rigid body
-        rb.velocity = tank.transform.forward * velocity * Time.deltaTime;
+        rb.velocity = tank.transform.forward * velocity;
 
         // Save the enemy's current velocity
         oldVelocity = velocity;
@@ -250,7 +252,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void RotateWheel(float wheelRotation, GameObject wheel)
     {
-        wheel.transform.Rotate(new Vector3(wheelRotation * Time.deltaTime, 0, 0));
+        wheel.transform.Rotate(new Vector3(wheelRotation, 0, 0));
     }
 
     private void OnTriggerEnter(Collider other)
