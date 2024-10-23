@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     {
         RotatePlayer();
         MovePlayer();
-        RotateWheels();
+        AnimateWheels();
 
         pressedLeft = false;
         pressedRight = false;
@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         oldVelocity = velocity;
     }
 
-    private void RotateWheels()
+    private void AnimateWheels()
     {
         if (velocity == 0)
         {

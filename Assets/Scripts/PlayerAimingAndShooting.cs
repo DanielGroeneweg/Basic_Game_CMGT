@@ -9,44 +9,69 @@ public class PlayerAimingAndShooting : MonoBehaviour
 {
     #region rotation variables
     // Publics
+    // A reference to the top part of the player tank
     public GameObject tankTop;
+
+    // A reference to the transform attached to the body of the player tank
     public Transform tankBodyTransform;
+
+    // The rate at which the top part of the tank rotates
     public float rotationSpeed;
 
     // Privates
+    // A float to keep track of what the value of the player's tank top rotation should be
     private float targetRotation;
     #endregion
 
     #region shooting variables
     // Publics
+    // The time in between each shot
     public float shootInterval;
+
+    // The speed at which bullets fired by the player travel
     public float bulletSpeed;
+
+    // a bool to keep track of if the player has a super bullet
     public bool hasSuperBullet = false;
+
+    // a reference to the normal player bullet prefab
     public GameObject bulletPrefab;
+
+    // A reference to the player super bullet prefab
     public GameObject superBulletPrefab;
+
+    // A reference to the BulletSpawnPoint gameobject so we can spawn bullets at its location
     public GameObject bulletSpawnPoint;
-    public CanvasManager canvasManager;
+
+    // A reference to the GameManager Script
+    GameManager _GameManager;
 
     // Privates
+    // A float to keep track of the cooldown timer
     private float shootCooldown;
+
+    // A bool to check if the player can shoot
     private bool canShoot = true;
     #endregion
 
     #region particle variables
+    // A reference to the particle spawned when shooting a bullet
     public GameObject particle;
+
+    // A reference to the sound player when shooting a bullet
     public AudioSource shootingSound;
-    private List<GameObject> particleList;
     #endregion
-
-    private void Awake()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     public void Update()
     {
+        // Rotate the top part of the player tank using the mouse input
         RotateTop();
-        if (canShoot && Input.GetMouseButtonDown(0)) Shoot();
+
+        // Check if the player pressed left mouse button if the player can shoot
+        // Don't use && check, otherwise the cooldown timer starts running already, causing the shoot interval to vary
+        if (canShoot)
+        {
+            if (Input.GetMouseButtonDown(0)) Shoot();
+        }
         else ShootCooldown();
     }
 
@@ -90,7 +115,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
             bullet = Instantiate(superBulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
             
             hasSuperBullet = false;
-            canvasManager.SwitchBulletImageVisibility();
+            _GameManager._CanvasManager.SwitchBulletImageVisibility();
         }
 
         else

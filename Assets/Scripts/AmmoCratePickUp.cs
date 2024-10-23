@@ -6,27 +6,23 @@ using UnityEngine.UI;
 
 public class AmmoCratePickUp : MonoBehaviour
 {
-    private CanvasManager canvasManager;
-    private GameObject player;
-    private GameObject playerTank;
-    private PlayerAimingAndShooting playerScript;
-    private PickUpSpawner pickUpSpawner;
+    // A reference to the GameManager Script
+    private GameManager _GameManager;
     public void Start()
     {
-        canvasManager = GameObject.Find("Canvas").GetComponent<CanvasManager>();
-        player = GameObject.Find("PlayerItems");
-        playerTank = GameObject.Find("PlayerTank");
-        pickUpSpawner = GameObject.Find("PickUpSpawnPlatform").GetComponent<PickUpSpawner>();
-        playerScript = player.GetComponent<PlayerAimingAndShooting>();
+        // Get a reference to the GameManager Script
+        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject == playerTank && !playerScript.hasSuperBullet)
+        // If the player hit the super bullet pick up and they don't have one yet, give them a super bullet
+        if (collision.gameObject.tag == "Player" && !_GameManager._PlayerAimingAndShooting.hasSuperBullet)
         {
-            canvasManager.SwitchBulletImageVisibility();
-            playerScript.hasSuperBullet = true;
-            pickUpSpawner.hasSpawned = false;
+            // Give the player a super bullet
+            _GameManager.SuperBulletPickedUp();
+
+            // Destroy the pickup
             Destroy(gameObject);
         }
     }

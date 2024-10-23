@@ -8,36 +8,50 @@ public class EnemyAimingAndShooting : MonoBehaviour
 {
     #region aiming variables
     // Publics
+    // A reference to this enemy's top part of the tank
     public GameObject tankTop;
+
+    // The rate at which the top part of the tank rotates
     public float rotationSpeed;
 
     // Privates
-    private GameObject player;
-    private GameObject playerTank;
+    // A reference to the GameManager script
+    private GameManager _GameManager;
     #endregion
 
     #region shooting variables
     // Publics
+    // The time in between each shot
     public float shootInterval;
+    
+    // The speed of the bullets fired
     public float bulletSpeed;
+
+    // A reference to the bullet prefab
     public GameObject bulletPrefab;
+
+    // A reference to the bulletSpawnPoint gameobject
     public GameObject bulletSpawnPoint;
 
     // Privates
+    // A float to keep track of the shoot cooldown
     private float shootCooldown;
+
+    // A bool to keep track if the enemy can shoot
     private bool canShoot = true;
     #endregion
 
     #region particle variables
+    // A reference to the particle gameobject
     public GameObject particle;
+
+    // A reference to the sound used for shooting
     public AudioSource shootingSound;
-    private List<GameObject> particleList;
     #endregion
 
     public void Start()
     {
-        player = GameObject.Find("PlayerItems");
-        playerTank = GameObject.Find("PlayerTank");
+        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     public void Update()
     {
@@ -49,15 +63,16 @@ public class EnemyAimingAndShooting : MonoBehaviour
 
     private void Aim()
     {
+        // Use a raycast to check if there is no object in between the enemy and player, then rotate the enemy's top part of the tank towards the player
         RaycastHit hit;
-        Vector3 rayDirection = playerTank.transform.position - tankTop.transform.position;
-        if (Physics.Raycast(tankTop.transform.position, rayDirection, out hit) && hit.transform == player.transform)
+        Vector3 rayDirection = _GameManager._PlayerItems.transform.position - tankTop.transform.position;
+        if (Physics.Raycast(tankTop.transform.position, rayDirection, out hit) && hit.transform == _GameManager._PlayerItems.transform)
         {
             // Find the direction to the player in world space, but keep only the X and Z axes (ignore Y-axis)
             Vector3 directionToPlayer = new Vector3(
-                playerTank.transform.position.x - tankTop.transform.position.x,
+                _GameManager._PlayerItems.transform.position.x - tankTop.transform.position.x,
                 0,
-                playerTank.transform.position.z - tankTop.transform.position.z
+                _GameManager._PlayerItems.transform.position.z - tankTop.transform.position.z
             );
 
             // Create a rotation towards the player, keeping the Y-axis rotation only
@@ -70,8 +85,6 @@ public class EnemyAimingAndShooting : MonoBehaviour
                 rotationSpeed * Time.deltaTime
             );
         }
-
-        Debug.DrawRay(tankTop.transform.position, rayDirection, Color.red);
     }
 
     private void ShootCooldown()
@@ -89,8 +102,9 @@ public class EnemyAimingAndShooting : MonoBehaviour
 
     private void Shoot()
     {
+        // Use a raycast to check if the enemy tank's barrel is directly aimed at the player, then shoot
         RaycastHit hit;
-        if (Physics.Raycast(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.forward, out hit) && hit.transform == player.transform)
+        if (Physics.Raycast(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.forward, out hit) && hit.transform == _GameManager._PlayerItems.transform)
         {
             // Create a bullet at the bullet spawn point gameobject's transform
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
@@ -107,8 +121,6 @@ public class EnemyAimingAndShooting : MonoBehaviour
             // Start the explosion sound
             shootingSound.Play();
         }
-
-        Debug.DrawRay(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.forward, Color.red);
     }
 
     private void SpawnParticle()

@@ -6,6 +6,9 @@ public class EnemyMovement : MonoBehaviour
     // A reference to the body of the enemy tank
     public GameObject tank;
 
+    // A reference to the GameManger script
+    GameManager _GameManager;
+
     #region movement
     // The acceleration when the enemy is driving
     public float acceleration;
@@ -26,14 +29,6 @@ public class EnemyMovement : MonoBehaviour
 
     // A float to keep track of the enemy's velocity
     private float velocity;
-
-    // A float to be able to compare the enemy's current and previous velocity
-    private float oldVelocity;
-
-    // A reference to the player and its movement script
-    private GameObject player;
-    private PlayerMovement playerMovement;
-    private GameObject playerTank;
 
     // The transforms of the rooms to which the enemy can move
     private Transform centerRoom;
@@ -66,17 +61,15 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        // Player References:
-        player = GameObject.Find("PlayerItems");
-        playerMovement = player.GetComponent<PlayerMovement>();
-        playerTank = GameObject.Find("PlayerTank");
+        // Get a reference to the GameManager script
+        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // Room references:
-        centerRoom = GameObject.Find("CenterRoom").GetComponent<Transform>();
-        topLeftRoom = GameObject.Find("TopL").GetComponent<Transform>();
-        topRightRoom = GameObject.Find("TopR").GetComponent<Transform>();
-        bottomLeftRoom = GameObject.Find("BotL").GetComponent<Transform>();
-        bottomRightRoom = GameObject.Find("BotR").GetComponent<Transform>();
+        centerRoom = _GameManager._CenterRoom;
+        topLeftRoom = _GameManager._TopLeftRoom;
+        topRightRoom = _GameManager._TopRightRoom;
+        bottomLeftRoom = _GameManager._BottomLeftRoom;
+        bottomRightRoom = _GameManager._BottomRightRoom;
     }
     private void FixedUpdate()
     {
@@ -89,18 +82,22 @@ public class EnemyMovement : MonoBehaviour
     {
         // If the enemy can see the player, rotate it towards the player
         RaycastHit hit;
-        var rayDirection = player.transform.position - transform.position;
-        if (Physics.Raycast(tank.transform.position, rayDirection, out hit) && hit.transform == player.transform)
+        var rayDirection = _GameManager._PlayerItems.transform.position - transform.position;
+        if (Physics.Raycast(tank.transform.position, rayDirection, out hit) && hit.transform == _GameManager._PlayerItems.transform)
         {
+            // Set the distantion type to player to ensure the enemy rotates towards the right target
             destinationType = destinationTypes.Player;
+
+            // Set isTraveling to false to prevent the enemy from moving towards a room
             isTraveling = false;
             canGoToNextDestination = false;
         }
 
+        // If the enemy can not see the player AND has no destination yet, check towards which room/destination it should move
         else if (!isTraveling)
         {
             // If the enemy can not see the player, but is in the same room, move towards center of the room
-            if (isInRoom.ToString() == playerMovement.isInRoom.ToString())
+            if (isInRoom.ToString() == _GameManager._PlayerMovement.isInRoom.ToString())
             {
                 isTraveling = true;
                 canGoToNextDestination = false;
@@ -139,20 +136,20 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-        if (destinationType == destinationTypes.Player) RotateEnemy(playerTank.transform);
+        if (destinationType == destinationTypes.Player) RotateEnemy(_GameManager._PlayerItems.transform);
         else if (destinationType == destinationTypes.Room) RotateEnemy(destinationTransform);
     }
     private void RotateEnemy(Transform target)
     {
         // Find the direction to the target in world space, but keep only the X and Z axes (ignore Y-axis)
-        Vector3 toPlayer = new Vector3(
+        Vector3 toTarget = new Vector3(
             target.position.x - tank.transform.position.x,
             0,
             target.position.z - tank.transform.position.z
         );
 
         // Create a rotation towards the target, keeping the Y-axis rotation only
-        Quaternion targetRotation = Quaternion.LookRotation(toPlayer);
+        Quaternion targetRotation = Quaternion.LookRotation(toTarget);
 
         // Smoothly rotate towards the target rotation, limiting to Y-axis
 
@@ -174,12 +171,10 @@ public class EnemyMovement : MonoBehaviour
         // Apply the enemy's velocity to the rigid body
         rb.velocity = tank.transform.forward * velocity;
 
-        // Save the enemy's current velocity
-        oldVelocity = velocity;
-
         // Check if the enemy has reached its destination if it's traveling
         if (isTraveling)
         {
+            // Check if the enemy is within range of the destination to say it has reached that destination
             Vector3 dif = transform.position - destinationTransform.position;
             if (dif.magnitude <= roomDestinationOffset)
             {
@@ -192,11 +187,11 @@ public class EnemyMovement : MonoBehaviour
     private void DetermineDestination()
     {
         /* =========================================================================================================================
-         * If the enemy is not in the same room as the player, it should move to the room the player is in.
-         * First the enemy should move towards the center of the room it is in to allow it to get out of the room into the center
+         * - If the enemy is not in the same room as the player, it should move to the room the player is in.
+         * - First the enemy should move towards the center of the room it is in to allow it to get out of the room into the center
          * room without bumping into a wall.
-         * After this the enemy should move to the center room.
-         * After this the enemy should move towards the room the player is in.
+         * - After this the enemy should move to the center room.
+         * - After this the enemy should move towards the room the player is in.
          * ====================================================================================================================== */
         CheckInWhichRoomIAM();
 
@@ -208,7 +203,7 @@ public class EnemyMovement : MonoBehaviour
             else
             {
                 // Switch the destination to the room the player is in to make the enemy move towards the player from the center room
-                switch (playerMovement.isInRoom)
+                switch (_GameManager._PlayerMovement.isInRoom)
                 {
                     case PlayerMovement.rooms.BottomLeft:
                         destination = rooms.BottomLeft;
@@ -251,39 +246,12 @@ public class EnemyMovement : MonoBehaviour
         wheel.transform.Rotate(new Vector3(wheelRotation, 0, 0));
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // Using the enum to keep track of in which area (I called them rooms) the enemy is
-        switch (other.tag)
-        {
-            case "CenterRoom":
-                isInRoom = rooms.Center;
-                break;
-            case "BottomLeftRoom":
-                isInRoom = rooms.BottomLeft;
-                break;
-            case "TopLeftRoom":
-                isInRoom = rooms.TopLeft;
-                break;
-            case "BottomRightRoom":
-                isInRoom = rooms.BottomRight;
-                break;
-            case "TopRightRoom":
-                isInRoom = rooms.TopRight;
-                break;
-            case "EnemyCenterRoom":
-                if (isTraveling)
-                {
-                    canGoToNextDestination = true;
-                    isTraveling = false;
-                }
-                break;
-        }
-    }
-
     private void CheckInWhichRoomIAM()
     {
+        // Get a list of all colliders colliding with the enemy
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+
+        // Go through them, using their tags to check if it's the hitbox of a room. Then change isInRoom to the room of the collider hit
         foreach (Collider hitCollider in hitColliders)
         {
             switch (hitCollider.gameObject.tag)
@@ -302,6 +270,13 @@ public class EnemyMovement : MonoBehaviour
                     break;
                 case "TopRightRoom":
                     isInRoom = rooms.TopRight;
+                    break;
+                case "EnemyCenterRoom":
+                    if (isTraveling)
+                    {
+                        canGoToNextDestination = true;
+                        isTraveling = false;
+                    }
                     break;
             }
         }

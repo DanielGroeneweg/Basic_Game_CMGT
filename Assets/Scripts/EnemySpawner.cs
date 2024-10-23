@@ -6,26 +6,47 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    // A reference to the enemy prefab it should spawn
     public GameObject enemyPrefab;
+
+    // A reference to the playermovement script
     public PlayerMovement _PlayerMovement;
+
+    // the time that is between each series of enemy spawns
     public float spawnCooldown;
+
+    // The rate at which the spawn cooldown shortens over time
     public float cooldownReduction;
+
+    // The minimum value of the spawn cooldown
     public float minCooldown;
+
+    // The amount of series of enemy spawns before more enemies will be spawned in one serie of enemy spawns
     public float SpawnsForIncrease;
 
+    // A list with all spawners
     public List<GameObject> spawnerList;
 
+    // A float to keep track of the cooldown time
     private float cooldownTimer = 0;
+
+    // A float to keep track of how enemies should be spawned in one serie of enemy spawns
     private float howManyEnemiesToSpawn = 1;
+
+    // The max amount of enemies spawned in one series of enemy spawns
     private float maxEnemySpawnAmount;
+
+    // A float to keep track of how many series of enemy spawns there have been
     private float timesSpawned;
+
+    // A bool to check if we can spawn enemies
     private bool canSpawn = true;
 
     private void Start()
     {
-        List<GameObject> spawners = new List<GameObject>();
-        foreach (GameObject spawner in spawnerList) spawners.Add(spawner);
-        maxEnemySpawnAmount = spawners.Count - 2f;
+        // Set the max eneny spawn amount to the amount of spawners minus two. This because each room has 2 spawners, I don't want to spawn enemies in the same room as the
+        // player, and with this limit there will be no enemies spawning inside of each other (or errors for going through an empty list)
+        maxEnemySpawnAmount = spawnerList.Count - 2f;
     }
     // Update is called once per frame
     void Update()
@@ -112,7 +133,10 @@ public class EnemySpawner : MonoBehaviour
 
     private void IncreaseSpawnRate()
     {
+        // Shorten the spawn cooldown
         if (spawnCooldown > minCooldown) spawnCooldown -= cooldownReduction;
+
+        // Make sure that if the spawn cooldown somehow comes under the minimum, it's set back to the minimum
         else if (spawnCooldown < minCooldown) spawnCooldown = minCooldown;
     }
 }

@@ -5,15 +5,24 @@ using UnityEngine;
 
 public class DisplayScoreInEndScene : MonoBehaviour
 {
+    // A reference to the player's score
     public IntCount score;
+
+    // The amount with which we increase the hue to make the score display different colors
     public float hueIncrease;
-    private TMP_Text scoreText;
+
+    // A reference to the score text component
+    public TMP_Text scoreText;
+
+    // A float to keep track of the hue
     private float hueValue;
 
     private void Awake()
     {
-        scoreText = GetComponent<TMP_Text>();
+        // Change the score text to the achieved score
         scoreText.text = score.value.ToString();
+
+        // Allow the player to move their cursor outside the game
         Cursor.lockState = CursorLockMode.None;
     }
 

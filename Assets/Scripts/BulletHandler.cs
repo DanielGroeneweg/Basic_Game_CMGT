@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class BulletHandler : MonoBehaviour
 {
+    // A reference to the explosion particle spawned upon bullet impact
     public GameObject particle;
-    private CanvasManager canvasManager;
+
+    // A reference to the GameManager Script
+    private GameManager _GameManager;
     private void Awake()
     {
+        // Make sure the Particle is disabled
         particle.SetActive(false);
     }
     private void Start()
     {
-        canvasManager = GameObject.Find("Canvas").GetComponent<CanvasManager>();
+        // Get a reference to the GameManager Script
+        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -22,23 +27,25 @@ public class BulletHandler : MonoBehaviour
             switch (gameObject.tag)
             {
                 case "EnemyBullet":
-                    // Damage the player
-                    if (collision.gameObject.tag == "Player") canvasManager.DamagePlayer();
+                    // Damage the player if they were hit by an enemy bullet
+                    if (collision.gameObject.tag == "Player") _GameManager.DamagePlayer();
                     break;
+                
                 case "PlayerBullet":
                     if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
                     {
-                        // Get the top parent of the enemy
+                        // Get the top parent of the enemy that was hit
                         GameObject obj = collision.gameObject;
                         if (obj.tag != "Enemy")
                         {
                             obj = obj.transform.root.gameObject;
                         }
 
-                        // Damage the enemy
-                        obj.GetComponent<EnemyHandler>().DamageEnemy();
+                        // Damage the enemy that was hit by the player bullet
+                        _GameManager.DamageEnemy(obj);
                     }
                     break;
+                
                 case "SuperBullet":
                     if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBody")
                     {
@@ -49,11 +56,11 @@ public class BulletHandler : MonoBehaviour
                             obj = obj.transform.root.gameObject;
                         }
 
-                        // Destroy the enemy
+                        // Destroy the enemy hit by the player super bullet
                         Destroy(obj);
 
                         // Increase the player score
-                        canvasManager.IncreaseScore();
+                        _GameManager.IncreaseScore();
                     }
                     break;
             }
@@ -74,8 +81,13 @@ public class BulletHandler : MonoBehaviour
 
     private void SpawnParticle()
     {
+        // Create the explosion particle
         GameObject myParticle = Instantiate(particle);
+        
+        // Set the explosion particle Y position
         myParticle.transform.position = new Vector3(transform.position.x, myParticle.transform.position.y, transform.position.z);
+        
+        // Enable the explosion particle
         myParticle.SetActive(true);
     }
 }

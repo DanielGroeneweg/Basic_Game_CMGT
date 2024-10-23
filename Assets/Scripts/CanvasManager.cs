@@ -5,44 +5,39 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System.ComponentModel;
 
 public class CanvasManager : MonoBehaviour
 {
-    public UnityEvent playerDied;
-    public IntCount score;
-    public IntCount playerHealth;
-    public Image superBulletImage;
-    public TMP_Text scoreText;
-    public List<GameObject> heartImages;
-    public SceneLoader sceneLoader;
+    // A reference to the Super Bullet Image
+    public GameObject superBulletImage;
 
-    private Color imageColor;
+    // A reference to the score text
+    public TMP_Text scoreText;
+
+    // A list of all heart images that display the player's health
+    public List<GameObject> heartImages;
 
     private void Start()
     {
-        imageColor = superBulletImage.color;
+        // Turn the super bullet image off at the start of the game (the player doesn't have one yet)
         SwitchBulletImageVisibility();
     }
     public void SwitchBulletImageVisibility()
     {
-        imageColor.a *= -1f;
-        superBulletImage.color = imageColor;
+        // Switch the GameObject.active state to the other possibility (it's a bool so the only options are true or false)
+        superBulletImage.SetActive(!superBulletImage.activeSelf);
     }
 
-    public void DamagePlayer()
+    public void ChangeHealthDisplay(int playerHealth)
     {
-        // Decrease health by 1, then remove a heart from the HUD
-        playerHealth.ChangeValue(-1);
-        if (playerHealth.value > 0) heartImages[(int)playerHealth.value - 1].SetActive(false);
-
-        // Load end screen if player died
-        if (playerHealth.value <= 0) sceneLoader.LoadScene("EndScene");
+        // Disable the most right of the hearts that display the player's health
+        if (playerHealth > 0) heartImages[(int)playerHealth - 1].SetActive(false);
     }
 
-    public void IncreaseScore()
+    public void ChangeScoreText(int score)
     {
-        score.ChangeValue(1);
-        scoreText.text = "Score: " + score.value;
-        Debug.Log(score.value);
+        // Change the score text to display a new score
+        scoreText.text = "Score: " + score;
     }
 }
