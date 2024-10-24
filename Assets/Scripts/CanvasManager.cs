@@ -31,8 +31,7 @@ public class CanvasManager : MonoBehaviour
 
     public void ChangeHealthDisplay(int playerHealth)
     {
-        // Disable the most right of the hearts that display the player's health
-        if (playerHealth > 0) heartImages[(int)playerHealth - 1].SetActive(false);
+        heartImages[playerHealth - 1].gameObject.SetActive(!heartImages[playerHealth - 1].gameObject.activeSelf);
     }
 
     public void ChangeScoreText(int score)

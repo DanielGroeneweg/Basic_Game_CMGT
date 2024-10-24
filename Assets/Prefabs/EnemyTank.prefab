@@ -274,7 +274,7 @@ MonoBehaviour:
   tankTop: {fileID: 8292645502859700160}
   rotationSpeed: 10
   shootInterval: 2.5
-  bulletSpeed: 50
+  bulletSpeed: 40
   bulletPrefab: {fileID: 8362787410197010642, guid: 08338119ba0c943449889713a3e36f21, type: 3}
   bulletSpawnPoint: {fileID: 1422669289394320427}
   particle: {fileID: 7496024707533380656}
@@ -293,6 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 2
   healthBar: {fileID: 2333169960673551320}
+  healthPickUpPrefab: {fileID: 6963934450645136518, guid: 60983b8287e8b8b4db9729eeadd5eaf7, type: 3}
 --- !u!114 &393158992132306966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +311,7 @@ MonoBehaviour:
   maxVelocity: 7.5
   rb: {fileID: 7301750157203306255}
   roomDestinationOffset: 2.5
-  rotationSpeed: 0.02
+  rotationSpeed: 0.05
   wheelFrontLeft: {fileID: 7130877665670209353}
   wheelFrontRight: {fileID: 4205195196547633986}
   wheelBackLeft: {fileID: 6823798893358818831}

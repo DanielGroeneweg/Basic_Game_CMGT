@@ -4025,7 +4025,7 @@ MonoBehaviour:
   spawnCooldown: 5
   cooldownReduction: 0.1
   minCooldown: 3
-  SpawnsForIncrease: 10
+  SpawnsForIncrease: 15
   spawnerList:
   - {fileID: 949861668}
   - {fileID: 791904549}
@@ -4719,7 +4719,7 @@ MonoBehaviour:
   acceleration: 0.2
   maxVelocity: 10
   deacceleration: 0.2
-  maxReverseVelocity: 300
+  maxReverseVelocity: 3
   passiveSlowDown: 0.1
   rb: {fileID: 1959602837}
   isInRoom: 0

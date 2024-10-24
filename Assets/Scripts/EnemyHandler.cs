@@ -11,6 +11,9 @@ public class EnemyHandler : MonoBehaviour
     // The healthbar of the enemy
     public GameObject healthBar;
 
+    // A reference to the health pick up prefab
+    public GameObject healthPickUpPrefab;
+
     // The max health an enemy should have
     private float maxHealth;
 
@@ -36,6 +39,14 @@ public class EnemyHandler : MonoBehaviour
         // increase the player's score and destroy this enemy if it has 0 or less HP
         if (health <= 0)
         {
+            // Get the position of the enemy and then float it above the ground
+            var pickUpLocation = transform.position;
+            pickUpLocation.y += 1;
+
+            // Create a health pick up
+            Instantiate(healthPickUpPrefab, pickUpLocation, Quaternion.identity);
+
+            // Increase score and destroy this enemy
             _GameManager.IncreaseScore();
             Destroy(gameObject);
         }

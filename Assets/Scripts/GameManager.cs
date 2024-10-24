@@ -53,14 +53,28 @@ public class GameManager : MonoBehaviour
 
     public void DamagePlayer()
     {
+        // Display our health
+        _CanvasManager.ChangeHealthDisplay(playerHealth.value);
+
         // Decrease health by 1, then remove a heart from the HUD
         playerHealth.ChangeValue(-1);
 
         // Load end screen if player died
         if (playerHealth.value <= 0) _SceneLoader.LoadScene("EndScene");
+    }
 
-        // Display our health
-        _CanvasManager.ChangeHealthDisplay(playerHealth.value);
+    public void HealPlayer()
+    {
+        // Cap our max health at 3
+        if (playerHealth.value < 3)
+        {
+            // increase health by 1, then add a heart from the HUD
+            playerHealth.ChangeValue(1);
+
+            // Display our health
+            _CanvasManager.ChangeHealthDisplay(playerHealth.value);
+        }
+        
     }
 
     public void DamageEnemy(GameObject enemy)
