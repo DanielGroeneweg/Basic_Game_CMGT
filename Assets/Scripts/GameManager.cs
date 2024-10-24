@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     // A reference to the player script that manages movement
     public PlayerMovement _PlayerMovement;
 
+    // A reference to the top part of the player tank
+    public GameObject _PlayerTankTop;
+
     // The room transforms used for the enemy movement AI
     public Transform _CenterRoom;
     public Transform _TopLeftRoom;

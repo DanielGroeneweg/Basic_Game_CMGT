@@ -117,7 +117,6 @@ public class EnemySpawner : MonoBehaviour
             // Remove the spawner from the list to prevent two enemies spawning at the same spot
             spawners.RemoveAt(rand);
         }
-        Debug.Log("Spawned " + howManyEnemiesToSpawn + " enemies!");
     }
 
     private void IncreaseSpawnAmount()

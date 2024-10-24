@@ -65,14 +65,14 @@ public class EnemyAimingAndShooting : MonoBehaviour
     {
         // Use a raycast to check if there is no object in between the enemy and player, then rotate the enemy's top part of the tank towards the player
         RaycastHit hit;
-        Vector3 rayDirection = _GameManager._PlayerItems.transform.position - tankTop.transform.position;
+        Vector3 rayDirection = _GameManager._PlayerTankTop.transform.position - tankTop.transform.position;
         if (Physics.Raycast(tankTop.transform.position, rayDirection, out hit) && hit.transform == _GameManager._PlayerItems.transform)
         {
             // Find the direction to the player in world space, but keep only the X and Z axes (ignore Y-axis)
             Vector3 directionToPlayer = new Vector3(
-                _GameManager._PlayerItems.transform.position.x - tankTop.transform.position.x,
+                _GameManager._PlayerTankTop.transform.position.x - tankTop.transform.position.x,
                 0,
-                _GameManager._PlayerItems.transform.position.z - tankTop.transform.position.z
+                _GameManager._PlayerTankTop.transform.position.z - tankTop.transform.position.z
             );
 
             // Create a rotation towards the player, keeping the Y-axis rotation only

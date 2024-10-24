@@ -56,14 +56,14 @@ public class ParticleShooter : MonoBehaviour
 
         // Create a random force
         float force = Random.Range(forceMin, forceMax);
-        
+
         // Create a vector3 using the random offsets for the direction
-        Vector3 direction = new Vector3(particleDirection.x + xOffset, particleDirection.y + yOffset, particleDirection.z);
+        Vector3 direction = new Vector3(particleDirection.x + xOffset, particleDirection.y + yOffset, particleDirection.z).normalized;
 
         // normalize the vector3, then multiply it by the random generated force
-        direction = direction.normalized * force;
+        Vector3 vec = direction * force;
 
         // Return the direction to use it as velocity
-        return direction;
+        return vec;
     }
 }

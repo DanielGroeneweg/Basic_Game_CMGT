@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 public class ConfettiDestroyer : MonoBehaviour
 {
-    private float timer;
-    public float targetTime;
-
+    public float destroyY;
     private void Update()
     {
-        // Add time, when the target time has been reached, destroy this object to prevent it from existing forever
-        timer += Time.deltaTime;
-        if (timer >= targetTime) Destroy(gameObject);
+        // Check if the particle has reached the target Y position, then destroy it
+        if (transform.position.y <= destroyY) Destroy(gameObject);
     }
 }

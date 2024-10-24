@@ -3188,6 +3188,7 @@ MonoBehaviour:
   _PlayerAimingAndShooting: {fileID: 1959602840}
   _PlayerItems: {fileID: 1959602835}
   _PlayerMovement: {fileID: 1959602838}
+  _PlayerTankTop: {fileID: 608383406}
   _CenterRoom: {fileID: 1623716435}
   _TopLeftRoom: {fileID: 1025692849}
   _TopRightRoom: {fileID: 8058160}
@@ -4684,7 +4685,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7090710131271465290, guid: 6f4d29cfd8b2b4744bcabc5437eeb536, type: 3}
   superBulletPrefab: {fileID: 9094009511398482965, guid: ebc8ef3e1eaa76c44aacba4e5ec67bf4, type: 3}
   bulletSpawnPoint: {fileID: 1002813644}
-  canvasManager: {fileID: 1584173340}
   particle: {fileID: 100008, guid: 7075bd5fe1480184695a32611c15da57, type: 3}
   shootingSound: {fileID: 1959602841}
 --- !u!82 &1959602841
