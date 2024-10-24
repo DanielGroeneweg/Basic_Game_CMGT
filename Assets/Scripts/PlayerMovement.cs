@@ -226,4 +226,11 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Make the player stop when bumping into something
+        string tag = collision.gameObject.tag;
+        if (tag != "PlayerBullet" && tag != "EnemyBullet" && tag != "SuperBullet" && tag != "Untagged") velocity = 0;
+    }
 }

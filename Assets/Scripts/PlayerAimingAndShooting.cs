@@ -44,7 +44,9 @@ public class PlayerAimingAndShooting : MonoBehaviour
     public GameObject bulletSpawnPoint;
 
     // A reference to the GameManager Script
-    GameManager _GameManager;
+    public GameManager _GameManager;
+
+    public LineRenderer laserSight;
 
     // Privates
     // A float to keep track of the cooldown timer
@@ -65,6 +67,9 @@ public class PlayerAimingAndShooting : MonoBehaviour
     {
         // Rotate the top part of the player tank using the mouse input
         RotateTop();
+
+        // Set the aiming dot to the object the player is aiming at
+        AimingDot();
 
         // Check if the player pressed left mouse button if the player can shoot
         // Don't use && check, otherwise the cooldown timer starts running already, causing the shoot interval to vary
@@ -112,19 +117,21 @@ public class PlayerAimingAndShooting : MonoBehaviour
         // Change to Super Bullet if the player has one
         if (hasSuperBullet)
         {
-            bullet = Instantiate(superBulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
-            
+            bullet = Instantiate(superBulletPrefab, bulletSpawnPoint.transform.position + bulletSpawnPoint.transform.forward * 0.5f, bulletSpawnPoint.transform.rotation);
+            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+
             hasSuperBullet = false;
             _GameManager._CanvasManager.SwitchBulletImageVisibility();
         }
 
         else
         {
-            bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
+            bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position + bulletSpawnPoint.transform.forward * 0.5f, bulletSpawnPoint.transform.rotation);
+            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
         }
 
         // Set our bullet speed
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+        
 
         // Set canShoot to false to make us wait for the cooldown to shoot again
         canShoot = false;
@@ -141,5 +148,17 @@ public class PlayerAimingAndShooting : MonoBehaviour
         GameObject myParticle = Instantiate(particle);
         myParticle.transform.position = new Vector3(bulletSpawnPoint.transform.position.x, myParticle.transform.position.y, bulletSpawnPoint.transform.position.z);
         myParticle.SetActive(true);
+    }
+
+    private void AimingDot()
+    {
+        // Set the line renderer points to render a line in between the bullet spawnpoint and the first hitbox hit using a raycast
+        // going forwards from the buleltspawnpoint
+        RaycastHit hit;
+        if (Physics.Raycast(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.forward, out hit))
+        {
+            Vector3[] points = { bulletSpawnPoint.transform.position, hit.point };
+            laserSight.SetPositions(points);
+        }
     }
 }

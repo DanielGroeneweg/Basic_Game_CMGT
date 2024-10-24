@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8111747552132786935}
   - component: {fileID: 5431334544400180037}
   - component: {fileID: 1370539416919195759}
-  - component: {fileID: -1339412455600383884}
+  - component: {fileID: 5620030148629757190}
   m_Layer: 3
   m_Name: Super_Missile
   m_TagString: SuperBullet
@@ -127,8 +127,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
---- !u!64 &-1339412455600383884
-MeshCollider:
+--- !u!136 &5620030148629757190
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -145,10 +145,11 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6909719072842952981, guid: 3d210b2be9d4b9144b53828dfc2e73e3, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.03
+  m_Height: 0.25
+  m_Direction: 2
+  m_Center: {x: 0, y: -0.000000016763806, z: 0.13787118}
 --- !u!1001 &3879797338960458581
 PrefabInstance:
   m_ObjectHideFlags: 0

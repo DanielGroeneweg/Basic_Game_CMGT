@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 692907534891094489}
   - component: {fileID: 8838394306009765424}
   - component: {fileID: 4626912455347354657}
-  - component: {fileID: -8877465094849896503}
   - component: {fileID: -4028943713470377122}
+  - component: {fileID: 7935660026609108692}
   m_Layer: 3
   m_Name: Enemy_Missile
   m_TagString: EnemyBullet
@@ -114,8 +114,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
---- !u!64 &-8877465094849896503
-MeshCollider:
+--- !u!114 &-4028943713470377122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8362787410197010642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dccf5b342769d0746bf31a86c90419db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 7909340709196950504}
+--- !u!136 &7935660026609108692
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -132,23 +145,11 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6909719072842952981, guid: 3d210b2be9d4b9144b53828dfc2e73e3, type: 3}
---- !u!114 &-4028943713470377122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8362787410197010642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dccf5b342769d0746bf31a86c90419db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 7909340709196950504}
+  serializedVersion: 2
+  m_Radius: 0.03
+  m_Height: 0.25
+  m_Direction: 2
+  m_Center: {x: 0, y: -0.000000016763806, z: 0.13787118}
 --- !u!1001 &7909340709197049166
 PrefabInstance:
   m_ObjectHideFlags: 0
