@@ -46,7 +46,8 @@ public class ParticleShooter : MonoBehaviour
         Renderer renderer = particle.GetComponent<Renderer>();
 
         // set the particle's material color to a random color
-        renderer.material.color = Random.ColorHSV(0.5f, 1f);
+        float value = Random.Range(0.1f, 1);
+        renderer.material.color = Color.HSVToRGB(value, 1, 1);
     }
     private Vector3 CreateDirection()
     {
