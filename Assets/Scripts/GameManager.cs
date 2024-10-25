@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     // A reference to the playerhealth scriptable object
     public IntCount playerHealth;
 
+    // A reference to the enemiesinscene scriptable object
+    public IntCount enemiesInScene;
+
     // A reference to the scene loader script
     public SceneLoader _SceneLoader;
 
@@ -94,6 +97,9 @@ public class GameManager : MonoBehaviour
 
             // Create a health pick up
             Instantiate(healthPickUpPrefab, pickUpLocation, Quaternion.identity);
+
+            // Decrease the enemiesinscene value by 1
+            enemiesInScene.ChangeValue(-1);
 
             // Increase score and destroy this enemy
             IncreaseScore();

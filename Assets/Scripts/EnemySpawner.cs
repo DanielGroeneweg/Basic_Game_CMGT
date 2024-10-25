@@ -27,6 +27,9 @@ public class EnemySpawner : MonoBehaviour
     // A list with all spawners
     public List<GameObject> spawnerList;
 
+    // A reference to the enemiesInScene scriptable object
+    public IntCount enemiesInScene;
+
     // A float to keep track of the cooldown time
     private float cooldownTimer = 0;
 
@@ -51,6 +54,14 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Make enemies immediately spawn if the player killed all enemies
+        if (enemiesInScene.value == 0)
+        {
+            SpawnEnemies();
+            cooldownTimer = 0;
+        }
+
+        // Else use the spawn cooldown
         if (canSpawn) SpawnEnemies();
         else DoCooldown();
     }
@@ -116,6 +127,9 @@ public class EnemySpawner : MonoBehaviour
 
             // Remove the spawner from the list to prevent two enemies spawning at the same spot
             spawners.RemoveAt(rand);
+
+            // Increase the enemiesinscene value by 1
+            enemiesInScene.ChangeValue(1);
         }
     }
 

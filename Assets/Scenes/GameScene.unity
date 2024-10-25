@@ -3209,6 +3209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: {fileID: 11400000, guid: dd9a9583f7b431f46a10ac0d939890dd, type: 2}
   playerHealth: {fileID: 11400000, guid: e9b54136f12c6624d82c70472c7c5822, type: 2}
+  enemiesInScene: {fileID: 11400000, guid: 7e78046805ec8fb409e86a6075dda532, type: 2}
   _SceneLoader: {fileID: 1482620811}
   _CanvasManager: {fileID: 1584173340}
   _PickUpSpawner: {fileID: 2072362160}
@@ -4023,9 +4024,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3027468980819811938, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
   _PlayerMovement: {fileID: 1959602838}
-  spawnCooldown: 5
+  spawnCooldown: 10
   cooldownReduction: 0.1
-  minCooldown: 3
+  minCooldown: 5
   SpawnsForIncrease: 15
   spawnerList:
   - {fileID: 949861668}
@@ -4036,6 +4037,7 @@ MonoBehaviour:
   - {fileID: 745650823}
   - {fileID: 1060339300}
   - {fileID: 518964723}
+  enemiesInScene: {fileID: 11400000, guid: 7e78046805ec8fb409e86a6075dda532, type: 2}
 --- !u!4 &1659994766
 Transform:
   m_ObjectHideFlags: 0
