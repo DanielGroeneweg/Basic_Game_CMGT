@@ -1,6 +1,7 @@
  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BulletHandler : MonoBehaviour
 {
@@ -78,7 +79,6 @@ public class BulletHandler : MonoBehaviour
             }
         }
     }
-
     private void SpawnParticle()
     {
         // Create the explosion particle

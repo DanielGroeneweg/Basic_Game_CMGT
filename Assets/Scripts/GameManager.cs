@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     // A reference to the top part of the player tank
     public GameObject _PlayerTankTop;
 
+    // A reference to the health pick-up dropped by killed enemies
+    public GameObject healthPickUpPrefab;
+
     // The room transforms used for the enemy movement AI
     public Transform _CenterRoom;
     public Transform _TopLeftRoom;
@@ -79,8 +82,23 @@ public class GameManager : MonoBehaviour
 
     public void DamageEnemy(GameObject enemy)
     {
-        // Damage the Enemy
-        enemy.GetComponent<EnemyHandler>().DamageEnemy();
+        EnemyHandler _EnemyHandler = enemy.GetComponent<EnemyHandler>();
+        _EnemyHandler.DamageEnemy();
+
+        // increase the player's score and destroy this enemy if it has 0 or less HP
+        if (_EnemyHandler.health <= 0)
+        {
+            // Get the position of the enemy and then float it above the ground
+            var pickUpLocation = enemy.transform.position;
+            pickUpLocation.y += 1;
+
+            // Create a health pick up
+            Instantiate(healthPickUpPrefab, pickUpLocation, Quaternion.identity);
+
+            // Increase score and destroy this enemy
+            IncreaseScore();
+            Destroy(enemy);
+        }
     }
 
     public void SuperBulletPickedUp()

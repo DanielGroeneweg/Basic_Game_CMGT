@@ -3216,6 +3216,7 @@ MonoBehaviour:
   _PlayerItems: {fileID: 1959602835}
   _PlayerMovement: {fileID: 1959602838}
   _PlayerTankTop: {fileID: 608383406}
+  healthPickUpPrefab: {fileID: 6963934450645136518, guid: 60983b8287e8b8b4db9729eeadd5eaf7, type: 3}
   _CenterRoom: {fileID: 1623716435}
   _TopLeftRoom: {fileID: 1025692849}
   _TopRightRoom: {fileID: 8058160}
