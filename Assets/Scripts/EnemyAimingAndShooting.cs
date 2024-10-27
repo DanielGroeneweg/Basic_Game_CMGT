@@ -55,10 +55,13 @@ public class EnemyAimingAndShooting : MonoBehaviour
     }
     public void Update()
     {
-        Aim();
+        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        {
+            Aim();
 
-        if (canShoot) Shoot();
-        else ShootCooldown();
+            if (canShoot) Shoot();
+            else ShootCooldown();
+        }
     }
 
     private void Aim()
@@ -110,7 +113,7 @@ public class EnemyAimingAndShooting : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
             
             // Set our bullet speed
-            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+            bullet.GetComponent<BulletHandler>().speed = bulletSpeed;
             
             // Set canShoot to false to make us wait for the cooldown to shoot again
             canShoot = false;

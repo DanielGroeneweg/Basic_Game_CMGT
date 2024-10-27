@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // An enum to control if the game is paused or not
+    public enum gameStates { Playing, Paused };
+    public gameStates gameState = gameStates.Playing;
+
     // A reference to the score scriptable object
     public IntCount score;
 
@@ -43,6 +48,15 @@ public class GameManager : MonoBehaviour
     public Transform _TopRightRoom;
     public Transform _BottomLeftRoom;
     public Transform _BottomRightRoom;
+
+    // A reference to the highscore scriptable object
+    public IntCount highscore;
+
+    // A reference to the set cursor mode script
+    public SetCursorMode _SetCursorMode;
+
+    // A reference to the pauseMenu shown when the game is paused
+    public GameObject pauseMenu;
     private void Awake()
     {
         // Make it so the player cursor is invisible and locked to the center of the screen
@@ -55,6 +69,9 @@ public class GameManager : MonoBehaviour
 
         // Display the new Score
         _CanvasManager.ChangeScoreText(score.value);
+
+        // Save the highscore if the player's score is higher than the highscore (we do it here to also save the score if the game crashes or is closed before the player loses)
+        if (score.value > highscore.value) highscore.SetValue(score.value);
     }
 
     public void DamagePlayer()
@@ -65,10 +82,17 @@ public class GameManager : MonoBehaviour
         // Decrease health by 1, then remove a heart from the HUD
         playerHealth.ChangeValue(-1);
 
-        // Load end screen if player died
-        if (playerHealth.value <= 0) _SceneLoader.LoadScene("EndScene");
+        // If the player has 0 health, the game ends
+        if (playerHealth.value <= 0) GameOver();
     }
+    private void GameOver()
+    {
+        // Set the cursor lock mode to none
+        _SetCursorMode.SetCursorLockState("None");
 
+        // Load the end screen
+        _SceneLoader.LoadScene("EndScene");
+    }
     public void HealPlayer()
     {
         // Cap our max health at 3
@@ -117,5 +141,26 @@ public class GameManager : MonoBehaviour
 
         // Tell our pick-up spawner the pick-up has been picked up
         _PickUpSpawner.hasSpawned = false;
+    }
+
+    private void Update()
+    {
+        // Pause the game if the player presses escape
+        if (Input.GetKeyDown(KeyCode.Escape)) ShowPauseMenu();
+    }
+
+    private void ShowPauseMenu()
+    {
+        gameState = gameStates.Paused;
+        pauseMenu.SetActive(true);
+        _PlayerItems.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        _SetCursorMode.SetCursorLockState("None");
+    }
+
+    public void ContinueGame()
+    {
+        gameState = gameStates.Playing;
+        pauseMenu.SetActive(false);
+        _SetCursorMode.SetCursorLockState("Locked");
     }
 }

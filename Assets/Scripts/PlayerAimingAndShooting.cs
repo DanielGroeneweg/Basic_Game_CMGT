@@ -65,19 +65,22 @@ public class PlayerAimingAndShooting : MonoBehaviour
     #endregion
     public void Update()
     {
-        // Rotate the top part of the player tank using the mouse input
-        RotateTop();
-
-        // Set the aiming dot to the object the player is aiming at
-        AimingDot();
-
-        // Check if the player pressed left mouse button if the player can shoot
-        // Don't use && check, otherwise the cooldown timer starts running already, causing the shoot interval to vary
-        if (canShoot)
+        if (_GameManager.gameState == GameManager.gameStates.Playing)
         {
-            if (Input.GetMouseButtonDown(0)) Shoot();
+            // Rotate the top part of the player tank using the mouse input
+            RotateTop();
+
+            // Set the aiming dot to the object the player is aiming at
+            AimingDot();
+
+            // Check if the player pressed left mouse button if the player can shoot
+            // Don't use && check, otherwise the cooldown timer starts running already, causing the shoot interval to vary
+            if (canShoot)
+            {
+                if (Input.GetMouseButtonDown(0)) Shoot();
+            }
+            else ShootCooldown();
         }
-        else ShootCooldown();
     }
 
     private void RotateTop()
@@ -118,7 +121,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
         if (hasSuperBullet)
         {
             bullet = Instantiate(superBulletPrefab, bulletSpawnPoint.transform.position + bulletSpawnPoint.transform.forward * 0.5f, bulletSpawnPoint.transform.rotation);
-            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+            bullet.GetComponent<BulletHandler>().speed = bulletSpeed;
 
             hasSuperBullet = false;
             _GameManager._CanvasManager.SwitchBulletImageVisibility();
@@ -127,7 +130,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
         else
         {
             bullet = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position + bulletSpawnPoint.transform.forward * 0.5f, bulletSpawnPoint.transform.rotation);
-            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * bulletSpeed;
+            bullet.GetComponent<BulletHandler>().speed = bulletSpeed;
         }
 
         // Set our bullet speed

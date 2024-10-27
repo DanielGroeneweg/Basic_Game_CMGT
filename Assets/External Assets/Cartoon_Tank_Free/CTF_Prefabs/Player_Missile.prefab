@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 615690302633870965}
+  rb: {fileID: 6796014503422047397}
 --- !u!136 &6803523076409281518
 CapsuleCollider:
   m_ObjectHideFlags: 0

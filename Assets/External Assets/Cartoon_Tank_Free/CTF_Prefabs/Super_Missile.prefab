@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 3879797338960557555}
+  rb: {fileID: 1370539416919195759}
 --- !u!54 &1370539416919195759
 Rigidbody:
   m_ObjectHideFlags: 0

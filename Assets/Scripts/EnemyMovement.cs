@@ -73,9 +73,14 @@ public class EnemyMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        MoveEnemyForwards();
-        CheckDestination();
-        RotateWheels();
+        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        {
+            MoveEnemyForwards();
+            CheckDestination();
+            RotateWheels();
+        }
+
+        if (_GameManager.gameState == GameManager.gameStates.Paused) rb.velocity = Vector3.zero;
     }
 
     private void CheckDestination()
@@ -271,14 +276,15 @@ public class EnemyMovement : MonoBehaviour
                 case "TopRightRoom":
                     isInRoom = rooms.TopRight;
                     break;
-                case "EnemyCenterRoom":
-                    if (isTraveling)
-                    {
-                        canGoToNextDestination = true;
-                        isTraveling = false;
-                    }
-                    break;
             }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "EnemyCenterRoom" && isTraveling)
+        {
+            canGoToNextDestination = true;
+            isTraveling = false;
         }
     }
 }

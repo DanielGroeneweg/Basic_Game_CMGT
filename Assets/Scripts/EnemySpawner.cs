@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    // A reference to the gamemanager script
+    public GameManager gameManager;
     // A reference to the enemy prefab it should spawn
     public GameObject enemyPrefab;
 
@@ -54,16 +56,19 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Make enemies immediately spawn if the player killed all enemies
-        if (enemiesInScene.value == 0)
+        if (gameManager.gameState == GameManager.gameStates.Playing)
         {
-            SpawnEnemies();
-            cooldownTimer = 0;
-        }
+            // Make enemies immediately spawn if the player killed all enemies
+            if (enemiesInScene.value == 0)
+            {
+                SpawnEnemies();
+                cooldownTimer = 0;
+            }
 
-        // Else use the spawn cooldown
-        if (canSpawn) SpawnEnemies();
-        else DoCooldown();
+            // Else use the spawn cooldown
+            if (canSpawn) SpawnEnemies();
+            else DoCooldown();
+        }
     }
     private void SpawnEnemies()
     {

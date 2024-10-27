@@ -1,6 +1,8 @@
 using UnityEngine;
 public class PickUpSpawner : MonoBehaviour
 {
+    // A reference to the gamemanager script
+    public GameManager gameManager;
     // The time in between each pick-up spawn
     public float spawnCooldown;
 
@@ -15,12 +17,15 @@ public class PickUpSpawner : MonoBehaviour
 
     // A bool to check if the time for a new pick-up to be spawned has passed
     private bool canSpawn = false;
-    void FixedUpdate()
+    void Update()
     {
-        if (!hasSpawned)
+        if (gameManager.gameState == GameManager.gameStates.Playing)
         {
-            if (canSpawn) SpawnPickUp();
-            else DoCooldown();
+            if (!hasSpawned)
+            {
+                if (canSpawn) SpawnPickUp();
+                else DoCooldown();
+            }
         }
     }
 

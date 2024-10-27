@@ -5,6 +5,9 @@ public class PlayerMovement : MonoBehaviour
     // A reference to the body of the player tank
     public GameObject tank;
 
+    // A reference to the gamemanager script
+    public GameManager gameManager;
+
     #region movement
     // The acceleration when the player is driving
     public float acceleration;
@@ -60,22 +63,28 @@ public class PlayerMovement : MonoBehaviour
     #endregion
     private void FixedUpdate()
     {
-        RotatePlayer();
-        MovePlayer();
-        AnimateWheels();
+        if (gameManager.gameState == GameManager.gameStates.Playing)
+        {
+            RotatePlayer();
+            MovePlayer();
+            AnimateWheels();
 
-        pressedLeft = false;
-        pressedRight = false;
-        pressedForward = false;
-        pressedBackward = false;
+            pressedLeft = false;
+            pressedRight = false;
+            pressedForward = false;
+            pressedBackward = false;
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) pressedLeft = true;
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) pressedRight = true;
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) pressedForward = true;
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) pressedBackward = true;
+        if (gameManager.gameState == GameManager.gameStates.Playing)
+        {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) pressedLeft = true;
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) pressedRight = true;
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) pressedForward = true;
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) pressedBackward = true;
+        }
     }
 
     private void RotatePlayer()

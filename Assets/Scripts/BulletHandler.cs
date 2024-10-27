@@ -1,5 +1,6 @@
  using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,6 +8,11 @@ public class BulletHandler : MonoBehaviour
 {
     // A reference to the explosion particle spawned upon bullet impact
     public GameObject particle;
+
+    // A reference to the rigidbody attached to this object
+    public Rigidbody rb;
+
+    public float speed;
 
     // A reference to the GameManager Script
     private GameManager _GameManager;
@@ -19,6 +25,11 @@ public class BulletHandler : MonoBehaviour
     {
         // Get a reference to the GameManager Script
         _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+    private void Update()
+    {
+        if (_GameManager.gameState == GameManager.gameStates.Playing) rb.velocity = transform.forward * speed;
+        if (_GameManager.gameState == GameManager.gameStates.Paused) rb.velocity = transform.forward * 0;
     }
     private void OnTriggerEnter(Collider collision)
     {
