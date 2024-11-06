@@ -3381,23 +3381,23 @@ MonoBehaviour:
   gameState: 0
   score: {fileID: 11400000, guid: dd9a9583f7b431f46a10ac0d939890dd, type: 2}
   playerHealth: {fileID: 11400000, guid: e9b54136f12c6624d82c70472c7c5822, type: 2}
-  enemiesInScene: {fileID: 11400000, guid: 7e78046805ec8fb409e86a6075dda532, type: 2}
+  highscore: {fileID: 11400000, guid: 53e7997b1b79df748a90a869fe16d32c, type: 2}
   _SceneLoader: {fileID: 1482620811}
   _CanvasManager: {fileID: 1584173340}
   _PickUpSpawner: {fileID: 2072362160}
   _PlayerAimingAndShooting: {fileID: 1959602840}
-  _PlayerItems: {fileID: 1959602835}
   _PlayerMovement: {fileID: 1959602838}
+  _EnemySpawner: {fileID: 1659994765}
+  _SetCursorMode: {fileID: 1482620812}
   _PlayerTankTop: {fileID: 608383406}
   healthPickUpPrefab: {fileID: 6963934450645136518, guid: 60983b8287e8b8b4db9729eeadd5eaf7, type: 3}
+  _PlayerItems: {fileID: 1959602835}
+  pauseMenu: {fileID: 691267580}
   _CenterRoom: {fileID: 1623716435}
   _TopLeftRoom: {fileID: 1025692849}
   _TopRightRoom: {fileID: 8058160}
   _BottomLeftRoom: {fileID: 343334703}
   _BottomRightRoom: {fileID: 1761630164}
-  highscore: {fileID: 11400000, guid: 53e7997b1b79df748a90a869fe16d32c, type: 2}
-  _SetCursorMode: {fileID: 1482620812}
-  pauseMenu: {fileID: 691267580}
 --- !u!4 &1482620810
 Transform:
   m_ObjectHideFlags: 0
@@ -4211,8 +4211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1482620809}
-  enemyPrefab: {fileID: 3027468980819811938, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
   _PlayerMovement: {fileID: 1959602838}
+  enemyPrefab: {fileID: 3027468980819811938, guid: 381bab3116cce99488a1b623afc1b955, type: 3}
   spawnCooldown: 10
   cooldownReduction: 0.1
   minCooldown: 5
@@ -4226,7 +4226,7 @@ MonoBehaviour:
   - {fileID: 745650823}
   - {fileID: 1060339300}
   - {fileID: 518964723}
-  enemiesInScene: {fileID: 11400000, guid: 7e78046805ec8fb409e86a6075dda532, type: 2}
+  enemies: []
 --- !u!4 &1659994766
 Transform:
   m_ObjectHideFlags: 0

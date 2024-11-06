@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     // A reference to the playerhealth scriptable object
     public IntCount playerHealth;
 
-    // A reference to the enemiesinscene scriptable object
-    public IntCount enemiesInScene;
+    // A reference to the highscore scriptable object
+    public IntCount highscore;
 
     // A reference to the scene loader script
     public SceneLoader _SceneLoader;
@@ -30,11 +30,14 @@ public class GameManager : MonoBehaviour
     // A reference to the player script that manages aiming and shooting
     public PlayerAimingAndShooting _PlayerAimingAndShooting;
 
-    // A reference to the PlayerItems gameobject
-    public GameObject _PlayerItems;
-
     // A reference to the player script that manages movement
     public PlayerMovement _PlayerMovement;
+
+    // A reference to the enemySpawner script
+    public EnemySpawner _EnemySpawner;
+
+    // A reference to the set cursor mode script
+    public SetCursorMode _SetCursorMode;
 
     // A reference to the top part of the player tank
     public GameObject _PlayerTankTop;
@@ -42,21 +45,18 @@ public class GameManager : MonoBehaviour
     // A reference to the health pick-up dropped by killed enemies
     public GameObject healthPickUpPrefab;
 
+    // A reference to the PlayerItems gameobject
+    public GameObject _PlayerItems;
+
+    // A reference to the pauseMenu shown when the game is paused
+    public GameObject pauseMenu;
+
     // The room transforms used for the enemy movement AI
     public Transform _CenterRoom;
     public Transform _TopLeftRoom;
     public Transform _TopRightRoom;
     public Transform _BottomLeftRoom;
     public Transform _BottomRightRoom;
-
-    // A reference to the highscore scriptable object
-    public IntCount highscore;
-
-    // A reference to the set cursor mode script
-    public SetCursorMode _SetCursorMode;
-
-    // A reference to the pauseMenu shown when the game is paused
-    public GameObject pauseMenu;
     private void Awake()
     {
         // Make it so the player cursor is invisible and locked to the center of the screen
@@ -122,8 +122,8 @@ public class GameManager : MonoBehaviour
             // Create a health pick up
             Instantiate(healthPickUpPrefab, pickUpLocation, Quaternion.identity);
 
-            // Decrease the enemiesinscene value by 1
-            enemiesInScene.ChangeValue(-1);
+            // Remove the enemy from the enemies list
+            _EnemySpawner.enemies.Remove(enemy);
 
             // Increase score and destroy this enemy
             IncreaseScore();
