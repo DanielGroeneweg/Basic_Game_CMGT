@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    #region variables
     // An enum to control if the game is paused or not
     public enum gameStates { Playing, Paused };
     public gameStates gameState = gameStates.Playing;
@@ -57,17 +58,14 @@ public class GameManager : MonoBehaviour
     public Transform _TopRightRoom;
     public Transform _BottomLeftRoom;
     public Transform _BottomRightRoom;
+    #endregion
     private void Awake()
     {
-        // Make it so the player cursor is invisible and locked to the center of the screen
         Cursor.lockState = CursorLockMode.Locked;
     }
     public void IncreaseScore()
     {
-        // Increase score
         score.ChangeValue(1);
-
-        // Display the new Score
         _CanvasManager.ChangeScoreText(score.value);
 
         // Save the highscore if the player's score is higher than the highscore (we do it here to also save the score if the game crashes or is closed before the player loses)
@@ -76,10 +74,8 @@ public class GameManager : MonoBehaviour
 
     public void DamagePlayer()
     {
-        // Display our health
+        // Damage player and display its health
         _CanvasManager.ChangeHealthDisplay(playerHealth.value);
-
-        // Decrease health by 1, then remove a heart from the HUD
         playerHealth.ChangeValue(-1);
 
         // If the player has 0 health, the game ends
@@ -87,10 +83,8 @@ public class GameManager : MonoBehaviour
     }
     private void GameOver()
     {
-        // Set the cursor lock mode to none
+        // Enable the cursor and load the end scene
         _SetCursorMode.SetCursorLockState("None");
-
-        // Load the end screen
         _SceneLoader.LoadScene("EndScene");
     }
     public void HealPlayer()
@@ -100,8 +94,6 @@ public class GameManager : MonoBehaviour
         {
             // increase health by 1, then add a heart from the HUD
             playerHealth.ChangeValue(1);
-
-            // Display our health
             _CanvasManager.ChangeHealthDisplay(playerHealth.value);
         }
         
@@ -122,8 +114,8 @@ public class GameManager : MonoBehaviour
             // Create a health pick up
             Instantiate(healthPickUpPrefab, pickUpLocation, Quaternion.identity);
 
-            // Remove the enemy from the enemies list
-            _EnemySpawner.enemies.Remove(enemy);
+            // Decrease the amount of enemiesInScene int
+            _EnemySpawner.enemiesInScene--;
 
             // Increase score and destroy this enemy
             IncreaseScore();
@@ -133,13 +125,8 @@ public class GameManager : MonoBehaviour
 
     public void SuperBulletPickedUp()
     {
-        // Display that we have a super bullet
         _CanvasManager.SwitchBulletImageVisibility();
-
-        // Enable the super bullet for the player shooting script
         _PlayerAimingAndShooting.hasSuperBullet = true;
-
-        // Tell our pick-up spawner the pick-up has been picked up
         _PickUpSpawner.hasSpawned = false;
     }
 

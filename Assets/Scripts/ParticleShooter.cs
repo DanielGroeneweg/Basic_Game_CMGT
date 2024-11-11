@@ -36,16 +36,12 @@ public class ParticleShooter : MonoBehaviour
         // Create a copy of the particle prefab
         GameObject particle = Instantiate(particlePrefab, transform.position, Quaternion.identity);
 
-        // Get a reference to the particle's RigidBody component
+        // Get a reference to the particle's RigidBody component and give it a random direction
         Rigidbody rb = particle.GetComponent<Rigidbody>();
-
-        // Give the particle a random direction and force
         rb.velocity = CreateDirection();
 
-        // Get a reference to the particle's material
+        // Get a reference to the particle's material and give it a random color
         Renderer renderer = particle.GetComponent<Renderer>();
-
-        // set the particle's material color to a random color
         float value = Random.Range(0.1f, 1);
         renderer.material.color = Color.HSVToRGB(value, 1, 1);
     }
@@ -63,8 +59,6 @@ public class ParticleShooter : MonoBehaviour
 
         // normalize the vector3, then multiply it by the random generated force
         Vector3 vec = direction * force;
-
-        // Return the direction to use it as velocity
         return vec;
     }
 }
