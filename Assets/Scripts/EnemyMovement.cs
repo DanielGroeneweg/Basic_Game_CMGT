@@ -6,17 +6,13 @@ public class EnemyMovement : MonoBehaviour
     // A reference to the body of the enemy tank
     public GameObject tank;
 
-    // A reference to the GameManger script
     private GameManager _GameManager;
 
     #region movement
-    // The acceleration when the enemy is driving
     public float acceleration;
 
-    // The maximum velocity the enemy should have
     public float maxVelocity;
 
-    // A reference to the rigidbody on the enemy
     public Rigidbody rb;
 
     // An enum to check where the enemy is for the movement
@@ -27,7 +23,6 @@ public class EnemyMovement : MonoBehaviour
     // The radius in which the enemy has "Reached" the center of a room
     public float roomDestinationOffset;
 
-    // A float to keep track of the enemy's velocity
     private float velocity;
 
     // The transforms of the rooms to which the enemy can move
@@ -42,20 +37,17 @@ public class EnemyMovement : MonoBehaviour
     private bool isTraveling = false;
     #endregion
 
-    // The speed at which the enemy tank rotates when steering
     public float rotationSpeed;
 
     public enum destinationTypes { Player, Room };
     private destinationTypes destinationType;
 
     #region wheel rotation
-    // A reference for every wheel to animate them spinning when driving
     public GameObject wheelFrontLeft;
     public GameObject wheelFrontRight;
     public GameObject wheelBackLeft;
     public GameObject wheelBackRight;
 
-    // The speed at which the wheels should spin when driving
     public float wheelRotationSpeed;
     #endregion
 
@@ -72,14 +64,14 @@ public class EnemyMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             MoveEnemyForwards();
             CheckDestination();
             RotateWheels();
         }
 
-        if (_GameManager.gameState == GameManager.gameStates.Paused) rb.velocity = Vector3.zero;
+        else rb.velocity = Vector3.zero;
     }
 
     private void CheckDestination()
@@ -101,7 +93,7 @@ public class EnemyMovement : MonoBehaviour
         else if (!isTraveling)
         {
             // If the enemy can not see the player, but is in the same room, move towards center of the room
-            if (isInRoom.ToString() == _GameManager._PlayerMovement.isInRoom.ToString())
+            if (isInRoom.ToString() == _GameManager._PlayerMovement.CheckInWhichRoomIAm().ToString())
             {
                 isTraveling = true;
                 canGoToNextDestination = false;
@@ -207,18 +199,18 @@ public class EnemyMovement : MonoBehaviour
             else
             {
                 // Switch the destination to the room the player is in to make the enemy move towards the player from the center room
-                switch (_GameManager._PlayerMovement.isInRoom)
+                switch (_GameManager._PlayerMovement.CheckInWhichRoomIAm())
                 {
-                    case PlayerMovement.rooms.BottomLeft:
+                    case PlayerMovement.rooms.BottomLeftRoom:
                         destination = rooms.BottomLeft;
                         break;
-                    case PlayerMovement.rooms.BottomRight:
+                    case PlayerMovement.rooms.BottomRightRoom:
                         destination = rooms.BottomRight;
                         break;
-                    case PlayerMovement.rooms.TopRight:
+                    case PlayerMovement.rooms.TopRightRoom:
                         destination = rooms.TopRight;
                         break;
-                    case PlayerMovement.rooms.TopLeft:
+                    case PlayerMovement.rooms.TopLeftRoom:
                         destination = rooms.TopLeft;
                         break;
                     case PlayerMovement.rooms.Center:

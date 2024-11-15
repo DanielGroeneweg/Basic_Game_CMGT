@@ -234,6 +234,7 @@ GameObject:
   - component: {fileID: 6933490964693085732}
   - component: {fileID: 7301750157203306255}
   - component: {fileID: 3865319651639779381}
+  - component: {fileID: 6574110245355183807}
   m_Layer: 0
   m_Name: EnemyTank
   m_TagString: Enemy
@@ -293,7 +294,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 2
   healthBar: {fileID: 2333169960673551320}
-  healthPickUpPrefab: {fileID: 6963934450645136518, guid: 60983b8287e8b8b4db9729eeadd5eaf7, type: 3}
 --- !u!114 &393158992132306966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,6 +461,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6574110245355183807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3027468980819811938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d4a6f59743c3141b8f87ef0fbf5c47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minePrefab: {fileID: 1039084175384335577, guid: e70ae1f19fd32f94e85aaa76529d3748, type: 3}
+  spawnInterval: 10
 --- !u!1 &4205195196547633986
 GameObject:
   m_ObjectHideFlags: 0

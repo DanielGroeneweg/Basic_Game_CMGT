@@ -33,24 +33,18 @@ public class EnemySpawner : MonoBehaviour
     #endregion
 
     #region private variables
-    // A float to keep track of the cooldown time
     private float cooldownTimer = 0;
 
-    // A float to keep track of how enemies should be spawned in one serie of enemy spawns
     private float howManyEnemiesToSpawn = 1;
 
-    // The max amount of enemies spawned in one series of enemy spawns
     private float maxEnemySpawnAmount;
 
-    // A float to keep track of how many series of enemy spawns there have been
     private float timesSpawned;
 
-    // A bool to check if we can spawn enemies
     private bool canSpawn = true;
 
     private List<GameObject> spawners;
 
-    // A reference to the gamemanager script
     private GameManager _GameManager;
 
     #endregion
@@ -62,10 +56,9 @@ public class EnemySpawner : MonoBehaviour
         maxEnemySpawnAmount = spawnerList.Count - 2f;
         spawners = new List<GameObject>();
     }
-    // Update is called once per frame
     void Update()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             // Make enemies immediately spawn if the player killed all enemies
             if (enemiesInScene == 0)
@@ -75,7 +68,7 @@ public class EnemySpawner : MonoBehaviour
             }
 
             // Else use the spawn cooldown
-            if (canSpawn) SpawnEnemies();
+            else if (canSpawn) SpawnEnemies();
             else DoCooldown();
         }
     }
@@ -99,33 +92,19 @@ public class EnemySpawner : MonoBehaviour
     private void Spawn()
     {
         // Get a list of all spawners, then remove the ones in the same room as the player
-        // Every room has 2 hitboxes that need to be removed from the list to make enemies not spawn in the same room as the player
+        // Every room has 2 spawners that need to be removed from the list to make enemies not spawn in the same room as the player
         spawners.Clear();
         foreach (GameObject spawner in spawnerList) spawners.Add(spawner);
 
-        switch (_PlayerMovement.isInRoom)
+        for (int i = spawners.Count - 1; i >= 0; i--)
         {
-            case PlayerMovement.rooms.TopLeft:
-                spawners.RemoveAt(0);
-                spawners.RemoveAt(0);
-                break;
-            case PlayerMovement.rooms.TopRight:
-                spawners.RemoveAt(2);
-                spawners.RemoveAt(2);
-                break;
-            case PlayerMovement.rooms.BottomLeft:
-                spawners.RemoveAt(4);
-                spawners.RemoveAt(4);
-                break;
-            case PlayerMovement.rooms.BottomRight:
-                spawners.RemoveAt(6);
-                spawners.RemoveAt(6);
-                break;
-            case PlayerMovement.rooms.Center:
-                break;
+            string playerLocation = _PlayerMovement.CheckInWhichRoomIAm().ToString();
+            if (spawners[i].tag == playerLocation)
+            {
+                spawners.Remove(spawners[i]);
+            }
         }
 
-        // Spawn enemies equal to the value of "howManyEnemiesToSpawn"
         for (int i = 1; i <= howManyEnemiesToSpawn; i++)
         {
             // Spawn an enemy on a random spawner chosen from the list of spawners
@@ -135,7 +114,6 @@ public class EnemySpawner : MonoBehaviour
             // Remove the spawner from the list to prevent two enemies spawning at the same spot
             spawners.RemoveAt(rand);
 
-            // increase enemies in scene count
             enemiesInScene++;
         }
     }

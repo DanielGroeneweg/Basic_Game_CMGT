@@ -25,7 +25,7 @@ public class PickUpSpawner : MonoBehaviour
     }
     void Update()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             if (!hasSpawned)
             {

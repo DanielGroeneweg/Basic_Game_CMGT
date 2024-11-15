@@ -69,7 +69,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
     }
     public void Update()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             // Rotate the top part of the player tank using the mouse input
             RotateTop();

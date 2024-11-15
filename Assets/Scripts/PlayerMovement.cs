@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
     
     // An enum to check where the player is for the enemy AI
-    public enum rooms { Center, BottomLeft, BottomRight, TopLeft, TopRight };
+    public enum rooms { Center, BottomLeftRoom, BottomRightRoom, TopLeftRoom, TopRightRoom };
     public rooms isInRoom = rooms.Center;
 
     // A float to keep track of the player's velocity
@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             RotatePlayer();
             MovePlayer();
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) pressedLeft = true;
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) pressedRight = true;
@@ -215,28 +215,32 @@ public class PlayerMovement : MonoBehaviour
         wheel.transform.Rotate(new Vector3(wheelRotation, 0, 0));
     }
 
-    private void OnTriggerEnter(Collider other)
+    public rooms CheckInWhichRoomIAm()
     {
-        // When the player enters an area (I called them rooms) by hitting the hitbox of that room, I change the enum to that room
-        // to be able to make the enemies use a movement pattern to move towards the player when they are not close to the player
-        switch (other.tag)
+        // Get a list of all colliders colliding with the player
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+
+        // Go through them, using their tags to check if it's the hitbox of a room. Then change isInRoom to the room of the collider hit
+        foreach (Collider hitCollider in hitColliders)
         {
-            case "CenterRoom":
-                if (isInRoom != rooms.Center) isInRoom = rooms.Center;
-                break;
-            case "BottomLeftRoom":
-                if (isInRoom != rooms.BottomLeft) isInRoom = rooms.BottomLeft;
-                    break;
-            case "TopLeftRoom":
-                if (isInRoom != rooms.TopLeft) isInRoom = rooms.TopLeft;
-                break;
-            case "BottomRightRoom":
-                if (isInRoom != rooms.BottomRight) isInRoom = rooms.BottomRight;
-                break;
-            case "TopRightRoom":
-                if (isInRoom != rooms.TopRight) isInRoom = rooms.TopRight;
-                break;
+            switch (hitCollider.gameObject.tag)
+            {
+                case "CenterRoom":
+                    return rooms.Center;
+                case "BottomLeftRoom":
+                    return rooms.BottomLeftRoom;
+                case "TopLeftRoom":
+                    return rooms.TopLeftRoom;
+                case "BottomRightRoom":
+                    return rooms.BottomRightRoom;
+                case "TopRightRoom":
+                    return rooms.TopRightRoom;
+            }
         }
+
+        // If this part of the code is executed, something is wrong!!!
+        Debug.LogWarning("Player is not in any room????");
+        return rooms.Center;
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -55,7 +55,7 @@ public class EnemyAimingAndShooting : MonoBehaviour
     }
     public void Update()
     {
-        if (_GameManager.gameState == GameManager.gameStates.Playing)
+        if (!_GameManager.gamePaused)
         {
             Aim();
 
