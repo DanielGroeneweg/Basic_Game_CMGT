@@ -6,8 +6,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject tank;
 
     // A reference to the gamemanager script
-    public GameManager gameManager;
-
+    private GameManager _GameManager;
     #region movement
     // The acceleration when the player is driving
     public float acceleration;
@@ -61,9 +60,13 @@ public class PlayerMovement : MonoBehaviour
     private enum rotateDirection { Left, Right, None};
     private rotateDirection myRotateDirection = rotateDirection.None;
     #endregion
+    private void Start()
+    {
+        _GameManager = GameManager.instance;
+    }
     private void FixedUpdate()
     {
-        if (gameManager.gameState == GameManager.gameStates.Playing)
+        if (_GameManager.gameState == GameManager.gameStates.Playing)
         {
             RotatePlayer();
             MovePlayer();
@@ -78,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (gameManager.gameState == GameManager.gameStates.Playing)
+        if (_GameManager.gameState == GameManager.gameStates.Playing)
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) pressedLeft = true;
             if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) pressedRight = true;

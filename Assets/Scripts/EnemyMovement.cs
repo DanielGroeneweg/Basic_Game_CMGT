@@ -7,7 +7,7 @@ public class EnemyMovement : MonoBehaviour
     public GameObject tank;
 
     // A reference to the GameManger script
-    GameManager _GameManager;
+    private GameManager _GameManager;
 
     #region movement
     // The acceleration when the enemy is driving
@@ -61,8 +61,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        // Get a reference to the GameManager script
-        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _GameManager = GameManager.instance;
 
         // Room references:
         centerRoom = _GameManager._CenterRoom;

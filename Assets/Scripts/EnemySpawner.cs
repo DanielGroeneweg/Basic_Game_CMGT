@@ -7,9 +7,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     #region public variables
-    // A reference to the gamemanager script
-    public GameManager gameManager;
-
     // A reference to the playermovement script
     public PlayerMovement _PlayerMovement;
 
@@ -52,9 +49,14 @@ public class EnemySpawner : MonoBehaviour
     private bool canSpawn = true;
 
     private List<GameObject> spawners;
+
+    // A reference to the gamemanager script
+    private GameManager _GameManager;
+
     #endregion
     private void Start()
     {
+        _GameManager = GameManager.instance;
         // Set the max eneny spawn amount to the amount of spawners minus two. This because each room has 2 spawners, I don't want to spawn enemies in the same room as the
         // player, and with this limit there will be no enemies spawning inside of each other (or errors for going through an empty list)
         maxEnemySpawnAmount = spawnerList.Count - 2f;
@@ -63,7 +65,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.gameState == GameManager.gameStates.Playing)
+        if (_GameManager.gameState == GameManager.gameStates.Playing)
         {
             // Make enemies immediately spawn if the player killed all enemies
             if (enemiesInScene == 0)

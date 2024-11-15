@@ -24,7 +24,7 @@ public class BulletHandler : MonoBehaviour
     private void Start()
     {
         // Get a reference to the GameManager Script
-        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _GameManager = GameManager.instance;
     }
     private void Update()
     {
@@ -68,11 +68,11 @@ public class BulletHandler : MonoBehaviour
                             obj = obj.transform.root.gameObject;
                         }
 
-                        // Destroy the enemy hit by the player super bullet
-                        Destroy(obj);
-
-                        // Increase the player score
-                        _GameManager.IncreaseScore();
+                        // Kill enemies hit by the player super bullet
+                        for (float i = obj.GetComponent<EnemyHandler>().health; i > 0; i--)
+                        {
+                            _GameManager.DamageEnemy(obj);
+                        }
                     }
                     break;
             }

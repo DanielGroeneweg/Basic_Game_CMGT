@@ -58,9 +58,14 @@ public class GameManager : MonoBehaviour
     public Transform _TopRightRoom;
     public Transform _BottomLeftRoom;
     public Transform _BottomRightRoom;
+
+    public static GameManager instance;
     #endregion
     private void Awake()
     {
+        if (instance == null) instance = this;
+        else Destroy(gameObject);
+
         Cursor.lockState = CursorLockMode.Locked;
     }
     public void IncreaseScore()

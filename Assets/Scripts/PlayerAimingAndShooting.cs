@@ -43,9 +43,6 @@ public class PlayerAimingAndShooting : MonoBehaviour
     // A reference to the BulletSpawnPoint gameobject so we can spawn bullets at its location
     public GameObject bulletSpawnPoint;
 
-    // A reference to the GameManager Script
-    public GameManager _GameManager;
-
     public LineRenderer laserSight;
 
     // Privates
@@ -54,6 +51,8 @@ public class PlayerAimingAndShooting : MonoBehaviour
 
     // A bool to check if the player can shoot
     private bool canShoot = true;
+
+    private GameManager _GameManager;
     #endregion
 
     #region particle variables
@@ -63,6 +62,11 @@ public class PlayerAimingAndShooting : MonoBehaviour
     // A reference to the sound player when shooting a bullet
     public AudioSource shootingSound;
     #endregion
+
+    private void Start()
+    {
+        _GameManager = GameManager.instance;
+    }
     public void Update()
     {
         if (_GameManager.gameState == GameManager.gameStates.Playing)

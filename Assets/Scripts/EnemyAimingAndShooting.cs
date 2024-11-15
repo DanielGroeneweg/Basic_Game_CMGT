@@ -51,7 +51,7 @@ public class EnemyAimingAndShooting : MonoBehaviour
 
     public void Start()
     {
-        _GameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _GameManager = GameManager.instance;
     }
     public void Update()
     {

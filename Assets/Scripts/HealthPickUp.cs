@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class HealthPickUp : MonoBehaviour
 {
-    private GameManager gameManager;
+    private GameManager _GameManager;
     public float rotationSpeed;
     void Start()
     {
         // Get a reference to the GameManager Script
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _GameManager = GameManager.instance;
     }
     private void FixedUpdate()
     {
@@ -21,7 +21,7 @@ public class HealthPickUp : MonoBehaviour
         // Heal the player if they collided with the  pickup, then destroy this pickup
         if (other.tag == "Player")
         {
-            gameManager.HealPlayer();
+            _GameManager.HealPlayer();
             Destroy(gameObject);
         }
     }
