@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    // A reference to the body of the enemy tank
     public GameObject tank;
 
     private GameManager _GameManager;
@@ -15,10 +14,8 @@ public class EnemyMovement : MonoBehaviour
 
     public Rigidbody rb;
 
-    // An enum to check where the enemy is for the movement
-    public enum rooms { BottomLeft, BottomRight, TopLeft, TopRight, Center };
-    private rooms isInRoom;
-    private rooms destination;
+    private PlayerMovement.rooms isInRoom;
+    private PlayerMovement.rooms destination;
     
     // The radius in which the enemy has "Reached" the center of a room
     public float roomDestinationOffset;
@@ -51,6 +48,8 @@ public class EnemyMovement : MonoBehaviour
     public float wheelRotationSpeed;
     #endregion
 
+    int ID;
+
     private void Start()
     {
         _GameManager = GameManager.instance;
@@ -61,6 +60,10 @@ public class EnemyMovement : MonoBehaviour
         topRightRoom = _GameManager._TopRightRoom;
         bottomLeftRoom = _GameManager._BottomLeftRoom;
         bottomRightRoom = _GameManager._BottomRightRoom;
+
+        CheckInWhichRoomIAM();
+
+        ID = Random.Range(0, 1000000000);
     }
     private void FixedUpdate()
     {
@@ -93,7 +96,7 @@ public class EnemyMovement : MonoBehaviour
         else if (!isTraveling)
         {
             // If the enemy can not see the player, but is in the same room, move towards center of the room
-            if (isInRoom.ToString() == _GameManager._PlayerMovement.CheckInWhichRoomIAm().ToString())
+            if (isInRoom == _GameManager._PlayerMovement.CheckInWhichRoomIAm())
             {
                 isTraveling = true;
                 canGoToNextDestination = false;
@@ -108,25 +111,24 @@ public class EnemyMovement : MonoBehaviour
                 canGoToNextDestination = false;
             }
 
-            // Rotate enemy to destination
             destinationType = destinationTypes.Room;
 
             // Set the destinationTransform
             switch (destination)
             {
-                case rooms.BottomLeft:
+                case PlayerMovement.rooms.BottomLeftRoom:
                     destinationTransform = bottomLeftRoom;
                     break;
-                case rooms.BottomRight:
+                case PlayerMovement.rooms.BottomRightRoom:
                     destinationTransform = bottomRightRoom;
                     break;
-                case rooms.TopRight:
+                case PlayerMovement.rooms.TopRightRoom:
                     destinationTransform = topRightRoom;
                     break;
-                case rooms.TopLeft:
+                case PlayerMovement.rooms.TopLeftRoom:
                     destinationTransform = topLeftRoom;
                     break;
-                case rooms.Center:
+                case PlayerMovement.rooms.Center:
                     destinationTransform = centerRoom;
                     break;
             }
@@ -144,10 +146,7 @@ public class EnemyMovement : MonoBehaviour
             target.position.z - tank.transform.position.z
         );
 
-        // Create a rotation towards the target, keeping the Y-axis rotation only
         Quaternion targetRotation = Quaternion.LookRotation(toTarget);
-
-        // Smoothly rotate towards the target rotation, limiting to Y-axis
 
         tank.transform.rotation = Quaternion.Lerp(
             tank.transform.rotation,
@@ -158,16 +157,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void MoveEnemyForwards()
     {
-        // Accelerate if the enemy hasn ot reached its maximum velocity
         if (velocity < maxVelocity) velocity += acceleration;
 
-        // Cap the enemy's velocity to the maximum in case it somehow goes over the maximum
         if (velocity > maxVelocity) velocity = maxVelocity;
 
-        // Apply the enemy's velocity to the rigid body
         rb.velocity = tank.transform.forward * velocity;
 
-        // Check if the enemy has reached its destination if it's traveling
         if (isTraveling)
         {
             // Check if the enemy is within range of the destination to say it has reached that destination
@@ -178,7 +173,6 @@ public class EnemyMovement : MonoBehaviour
                 isTraveling = false;
             }
         }
-        
     }
     private void DetermineDestination()
     {
@@ -194,7 +188,7 @@ public class EnemyMovement : MonoBehaviour
         if (canGoToNextDestination)
         {
             // Make the enemy first go to the center room to make it not run into walls
-            if (isInRoom != rooms.Center) destination = rooms.Center;
+            if (isInRoom != PlayerMovement.rooms.Center) destination = PlayerMovement.rooms.Center;
 
             else
             {
@@ -202,19 +196,19 @@ public class EnemyMovement : MonoBehaviour
                 switch (_GameManager._PlayerMovement.CheckInWhichRoomIAm())
                 {
                     case PlayerMovement.rooms.BottomLeftRoom:
-                        destination = rooms.BottomLeft;
+                        destination = PlayerMovement.rooms.BottomLeftRoom;
                         break;
                     case PlayerMovement.rooms.BottomRightRoom:
-                        destination = rooms.BottomRight;
+                        destination = PlayerMovement.rooms.BottomRightRoom;
                         break;
                     case PlayerMovement.rooms.TopRightRoom:
-                        destination = rooms.TopRight;
+                        destination = PlayerMovement.rooms.TopRightRoom;
                         break;
                     case PlayerMovement.rooms.TopLeftRoom:
-                        destination = rooms.TopLeft;
+                        destination = PlayerMovement.rooms.TopLeftRoom;
                         break;
                     case PlayerMovement.rooms.Center:
-                        destination = rooms.Center;
+                        destination = PlayerMovement.rooms.Center;
                         break;
                 }
             }
@@ -247,25 +241,24 @@ public class EnemyMovement : MonoBehaviour
         // Get a list of all colliders colliding with the enemy
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
 
-        // Go through them, using their tags to check if it's the hitbox of a room. Then change isInRoom to the room of the collider hit
         foreach (Collider hitCollider in hitColliders)
         {
             switch (hitCollider.gameObject.tag)
             {
                 case "CenterRoom":
-                    isInRoom = rooms.Center;
+                    isInRoom = PlayerMovement.rooms.Center;
                     break;
                 case "BottomLeftRoom":
-                    isInRoom = rooms.BottomLeft;
+                    isInRoom = PlayerMovement.rooms.BottomLeftRoom;
                     break;
                 case "TopLeftRoom":
-                    isInRoom = rooms.TopLeft;
+                    isInRoom = PlayerMovement.rooms.TopLeftRoom;
                     break;
                 case "BottomRightRoom":
-                    isInRoom = rooms.BottomRight;
+                    isInRoom = PlayerMovement.rooms.BottomRightRoom;
                     break;
                 case "TopRightRoom":
-                    isInRoom = rooms.TopRight;
+                    isInRoom = PlayerMovement.rooms.TopRightRoom;
                     break;
             }
         }
@@ -276,6 +269,7 @@ public class EnemyMovement : MonoBehaviour
         {
             canGoToNextDestination = true;
             isTraveling = false;
+            isInRoom = PlayerMovement.rooms.Center;
         }
     }
 }

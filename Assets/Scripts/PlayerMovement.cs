@@ -2,38 +2,27 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // A reference to the body of the player tank
     public GameObject tank;
 
-    // A reference to the gamemanager script
     private GameManager _GameManager;
     #region movement
-    // The acceleration when the player is driving
     public float acceleration;
-    
-    // The maximum velocity the player should have
+
     public float maxVelocity;
 
-    // The rate at which the player deaccelerates when breaking
     public float deacceleration;
 
-    // The maximum velocity the player should have when reversing
     public float maxReverseVelocity;
 
-    // The rate at which the player deaccelerates when not giving input
     public float passiveSlowDown;
 
-    // A reference to the rigidbody on the player
     public Rigidbody rb;
     
-    // An enum to check where the player is for the enemy AI
     public enum rooms { Center, BottomLeftRoom, BottomRightRoom, TopLeftRoom, TopRightRoom };
     public rooms isInRoom = rooms.Center;
 
-    // A float to keep track of the player's velocity
     private float velocity;
 
-    // A float to be able to compare the player's current and previous velocity
     private float oldVelocity;
 
     // Bools for inputs
@@ -43,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     private bool pressedRight;
     #endregion
 
-    // The speed at which the player tank rotates when steering
     public float rotationSpeed;
 
     #region wheel rotation
@@ -102,7 +90,6 @@ public class PlayerMovement : MonoBehaviour
                 var.z
                 );
             
-            // Save our rotate direction for the wheel animations
             myRotateDirection = rotateDirection.Right;
         }
 
@@ -115,21 +102,18 @@ public class PlayerMovement : MonoBehaviour
                 var.z
                 );
 
-            // Save our rotate direction for the wheel animations
             myRotateDirection = rotateDirection.Left;
         }
     }
 
     private void MovePlayer()
     {
-        // Give the player forwards velocty
         if (pressedForward)
         {
             if (velocity < maxVelocity) velocity += acceleration;
             if (velocity > maxVelocity) velocity = maxVelocity;
         }
 
-        // Give the player backwards velocity
         if (pressedBackward)
         {
             if (velocity > -maxReverseVelocity) velocity -= deacceleration;
@@ -140,13 +124,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (velocity < 0) velocity += passiveSlowDown;
             else if (velocity > 0) velocity -= passiveSlowDown;
-            if (velocity >= -passiveSlowDown/2f && velocity <= passiveSlowDown/2f && velocity != 0) velocity = 0;
+            
+            //Set the player's velocity to 0 when it keeps bouncing between negative and positive values
+            if (velocity >= -passiveSlowDown && velocity <= passiveSlowDown && velocity != 0) velocity = 0;
         }
 
-        // Apply our velocity to the rigid body
         rb.velocity = tank.transform.forward * velocity;
         
-        // Save our current velocity
         oldVelocity = velocity;
     }
 
@@ -206,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // Reset the rotate direction
         myRotateDirection = rotateDirection.None;
     }
 
@@ -217,10 +200,8 @@ public class PlayerMovement : MonoBehaviour
 
     public rooms CheckInWhichRoomIAm()
     {
-        // Get a list of all colliders colliding with the player
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
 
-        // Go through them, using their tags to check if it's the hitbox of a room. Then change isInRoom to the room of the collider hit
         foreach (Collider hitCollider in hitColliders)
         {
             switch (hitCollider.gameObject.tag)

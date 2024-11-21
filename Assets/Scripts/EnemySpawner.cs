@@ -7,28 +7,20 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     #region public variables
-    // A reference to the playermovement script
     public PlayerMovement _PlayerMovement;
 
-    // A reference to the enemy prefab it should spawn
     public GameObject enemyPrefab;
 
-    // the time that is between each series of enemy spawns
     public float spawnCooldown;
 
-    // The rate at which the spawn cooldown shortens over time
     public float cooldownReduction;
 
-    // The minimum value of the spawn cooldown
     public float minCooldown;
 
-    // The amount of series of enemy spawns before more enemies will be spawned in one serie of enemy spawns
     public float SpawnsForIncrease;
 
-    // A list with all spawners
     public List<GameObject> spawnerList;
 
-    // A list of all enemies in the scene
     public int enemiesInScene;
     #endregion
 
@@ -51,8 +43,6 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         _GameManager = GameManager.instance;
-        // Set the max eneny spawn amount to the amount of spawners minus two. This because each room has 2 spawners, I don't want to spawn enemies in the same room as the
-        // player, and with this limit there will be no enemies spawning inside of each other (or errors for going through an empty list)
         maxEnemySpawnAmount = spawnerList.Count - 2f;
         spawners = new List<GameObject>();
     }
@@ -60,14 +50,12 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!_GameManager.gamePaused)
         {
-            // Make enemies immediately spawn if the player killed all enemies
             if (enemiesInScene == 0)
             {
                 SpawnEnemies();
                 cooldownTimer = 0;
             }
 
-            // Else use the spawn cooldown
             else if (canSpawn) SpawnEnemies();
             else DoCooldown();
         }
@@ -107,11 +95,9 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 1; i <= howManyEnemiesToSpawn; i++)
         {
-            // Spawn an enemy on a random spawner chosen from the list of spawners
             int rand = Random.Range(0, spawners.Count);
-            GameObject enemy = Instantiate(enemyPrefab, spawners[rand].transform.position, spawners[rand].transform.rotation);
+            Instantiate(enemyPrefab, spawners[rand].transform.position, spawners[rand].transform.rotation);
 
-            // Remove the spawner from the list to prevent two enemies spawning at the same spot
             spawners.RemoveAt(rand);
 
             enemiesInScene++;
@@ -120,7 +106,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void IncreaseSpawnAmount()
     {
-        // Increase the enemies spawned for every "SpawnsForIncrease" times we have spawned a series of enemies
         timesSpawned++;
         if (timesSpawned >= SpawnsForIncrease)
         {
@@ -131,10 +116,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void IncreaseSpawnRate()
     {
-        // Shorten the spawn cooldown
         if (spawnCooldown > minCooldown) spawnCooldown -= cooldownReduction;
 
-        // Make sure that if the spawn cooldown somehow comes under the minimum, it's set back to the minimum
         else if (spawnCooldown < minCooldown) spawnCooldown = minCooldown;
     }
 }

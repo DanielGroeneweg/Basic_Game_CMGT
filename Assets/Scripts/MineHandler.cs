@@ -11,7 +11,7 @@ public class MineHandler : MonoBehaviour
     {
         _GameManager = GameManager.instance;
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "Player")
         {

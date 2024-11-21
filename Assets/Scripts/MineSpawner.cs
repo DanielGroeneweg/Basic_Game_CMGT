@@ -8,6 +8,8 @@ public class MineSpawner : MonoBehaviour
 
     public float spawnInterval;
 
+    public float mineDropDistance;
+
     private float timer;
 
     private bool canSpawn = false;
@@ -20,7 +22,9 @@ public class MineSpawner : MonoBehaviour
 
     private void SpawnMine()
     {
-        Instantiate(minePrefab, transform.position, Quaternion.identity);
+        Vector3 pos = transform.position;
+        pos.y = 0.5f;
+        Instantiate(minePrefab, pos, Quaternion.identity);
         canSpawn = false;
     }
 

@@ -276,7 +276,7 @@ MonoBehaviour:
   rotationSpeed: 10
   shootInterval: 2.5
   bulletSpeed: 40
-  bulletPrefab: {fileID: 8362787410197010642, guid: 08338119ba0c943449889713a3e36f21, type: 3}
+  bulletPrefab: {fileID: -4028943713470377122, guid: 08338119ba0c943449889713a3e36f21, type: 3}
   bulletSpawnPoint: {fileID: 1422669289394320427}
   particle: {fileID: 7496024707533380656}
   shootingSound: {fileID: 3865319651639779381}
@@ -475,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minePrefab: {fileID: 1039084175384335577, guid: e70ae1f19fd32f94e85aaa76529d3748, type: 3}
   spawnInterval: 10
+  mineDropDistance: 1
 --- !u!1 &4205195196547633986
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,25 +60,20 @@ public class GameManager : MonoBehaviour
 
     public void DamagePlayer()
     {
-        // Damage player and display its health
         _CanvasManager.ChangeHealthDisplay(playerHealth.value);
         playerHealth.ChangeValue(-1);
 
-        // If the player has 0 health, the game ends
         if (playerHealth.value <= 0) GameOver();
     }
     private void GameOver()
     {
-        // Enable the cursor and load the end scene
         _SetCursorMode.SetCursorLockState("None");
         _SceneLoader.LoadScene("EndScene");
     }
     public void HealPlayer()
     {
-        // Cap our max health at 3
         if (playerHealth.value < 3)
         {
-            // increase health by 1, then add a heart from the HUD
             playerHealth.ChangeValue(1);
             _CanvasManager.ChangeHealthDisplay(playerHealth.value);
         }
@@ -90,19 +85,14 @@ public class GameManager : MonoBehaviour
         EnemyHandler _EnemyHandler = enemy.GetComponent<EnemyHandler>();
         _EnemyHandler.DamageEnemy();
 
-        // increase the player's score and destroy this enemy if it has 0 or less HP
         if (_EnemyHandler.health <= 0)
         {
-            // Get the position of the enemy and then float it above the ground
             var pickUpLocation = enemy.transform.position;
             pickUpLocation.y += 1;
-
-            // Create a health pick up
             Instantiate(healthPickUpPrefab, pickUpLocation, Quaternion.identity);
 
             _EnemySpawner.enemiesInScene--;
 
-            // Increase score and destroy this enemy
             IncreaseScore();
             Destroy(enemy);
         }

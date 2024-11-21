@@ -12,13 +12,11 @@ public class SaveAndReadHighScore : MonoBehaviour
     }
     public void ReadHighScore()
     {
-        // Get our highscore saved in the player prefs and set the scriptable object to that value
         highScoreIntCount.SetValue(PlayerPrefs.GetInt("highscore"));
     }
 
     public void SaveHighScore()
     {
-        // Save our highscore saved in the scriptable object into the player prefs
         PlayerPrefs.SetInt("highscore", highScoreIntCount.value);
     }
 
