@@ -6,6 +6,8 @@ public class MineSpawner : MonoBehaviour
 {
     public GameObject minePrefab;
 
+    private GameManager _GameManager;
+
     public float spawnInterval;
 
     public float mineDropDistance;
@@ -14,10 +16,17 @@ public class MineSpawner : MonoBehaviour
 
     private bool canSpawn = false;
 
+    private void Start()
+    {
+        _GameManager = GameManager.instance;
+    }
     private void Update()
     {
-        if (canSpawn) SpawnMine();
-        else DoCooldown();
+        if (!_GameManager.gamePaused)
+        {
+            if (canSpawn) SpawnMine();
+            else DoCooldown();
+        }
     }
 
     private void SpawnMine()
