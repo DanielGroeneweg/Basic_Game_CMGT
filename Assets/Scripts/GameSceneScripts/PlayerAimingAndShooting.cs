@@ -8,6 +8,7 @@ using static UnityEngine.ParticleSystem;
 public class PlayerAimingAndShooting : MonoBehaviour
 {
     #region rotation variables
+    [Header("Rotation")]
     // Publics
     // A reference to the top part of the player tank
     public GameObject tankTop;
@@ -24,6 +25,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
     #endregion
 
     #region shooting variables
+    [Header("Shooting")]
     public float shootInterval;
 
     public float bulletSpeed;
@@ -46,6 +48,7 @@ public class PlayerAimingAndShooting : MonoBehaviour
     #endregion
 
     #region particle variables
+    [Header("Bullet")]
     // A reference to the particle spawned when shooting a bullet
     public GameObject particle;
 
