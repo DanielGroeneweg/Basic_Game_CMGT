@@ -1,13 +1,15 @@
 using Unity.VisualScripting;
 using UnityEngine;
-
+// Uses a pathfinding system to guide the enemy towards the player. Rotates the enemy so it goes to the player and moves it forward 
 public class EnemyMovement : MonoBehaviour
 {
+    [Header("General")]
     public GameObject tank;
 
     private GameManager _GameManager;
 
     #region movement
+    [Header("Movement")]
     public float acceleration;
 
     public float maxVelocity;
@@ -34,12 +36,14 @@ public class EnemyMovement : MonoBehaviour
     private bool isTraveling = false;
     #endregion
 
+    [Header("Rotation")]
     public float rotationSpeed;
 
     public enum destinationTypes { Player, Room };
     private destinationTypes destinationType;
 
     #region wheel rotation
+    [Header("Wheel Rotation")]
     public GameObject wheelFrontLeft;
     public GameObject wheelFrontRight;
     public GameObject wheelBackLeft;
